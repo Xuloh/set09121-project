@@ -25,7 +25,7 @@ ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res)
 file(GLOB_RECURSE Box2DSources lib/box2d/Box2D/Box2D/*.cpp lib/box2d/Box2D/Box2D/*.h)
 set(Box2D_INCS "lib/box2d/Box2D")
 link_directories("${CMAKE_BINARY_DIR}/lib/box2d")
-add_library(box2d SHARED ${Box2DSources})
+add_library(box2d STATIC ${Box2DSources})
 target_include_directories(box2d SYSTEM PRIVATE ${Box2D_INCS})
 
 ### Box2D test ###
