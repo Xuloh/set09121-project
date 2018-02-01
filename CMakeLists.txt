@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.9)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(Games_Engineering)
+project(Games_Engineering_Project)
 
 ### Setup Directories ###
 # Main output directory
