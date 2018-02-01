@@ -59,7 +59,7 @@ void load() {
 
 	helpText.setFont(font);
 	helpText.setCharacterSize(12);
-	helpText.setString("Use the arrows to change the gravity\nUse Ctrl+Left/Ctrl+Right to rotate the box\nPress Space to reset cube position");
+	helpText.setString("Use the arrows to change the gravity\nUse Ctrl+Left/Ctrl+Right to rotate the box\nPress Space to reset cube position\nPress return to reverse the gravity on one of the cubes");
 	helpText.setPosition(12, 12);
 
 	gravityArrow.setFont(font);
@@ -152,6 +152,14 @@ void update(RenderWindow &window) {
 		square2->SetAngularVelocity(0.f);
 	}
 
+	if(Keyboard::isKeyPressed(reverseGravityKey)) {
+		reverseGravityCube = !reverseGravityCube;
+		if (reverseGravityCube)
+			square2->SetGravityScale(0.f);
+		else
+			square2->SetGravityScale(1.f);
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::LControl)) {
 		// Rotate box
 		if (Keyboard::isKeyPressed(rotateBoxLeft))
@@ -185,6 +193,9 @@ void update(RenderWindow &window) {
 
 	gravityArrow.setPosition(gameWidth * .5f - gravityArrow.getLocalBounds().width * .5f, gameHeight * .5f - gravityArrow.getLocalBounds().height * .5f);
 
+	if(reverseGravityCube)
+		square2->ApplyForceToCenter(square2->GetMass() * -world.GetGravity(), true);
+	
 	world.Step(dt, velocityIterations, positionIterations);
 
 	const auto squarePosition = square->GetPosition();

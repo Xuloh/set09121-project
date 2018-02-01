@@ -19,6 +19,8 @@ const sf::Keyboard::Key gravityRightKey = sf::Keyboard::Right;
 const sf::Keyboard::Key resetCubes = sf::Keyboard::Space;
 const sf::Keyboard::Key rotateBoxLeft = sf::Keyboard::Left;
 const sf::Keyboard::Key rotateBoxRight = sf::Keyboard::Right;
+const sf::Keyboard::Key reverseGravityKey = sf::Keyboard::Return;
+bool reverseGravityCube = false;
 
 const b2Vec2 gravityUp(0.f, 9.81f);
 const b2Vec2 gravityLeft(-9.81f, 0.f);
