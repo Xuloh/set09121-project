@@ -30,6 +30,6 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
 add_executable(Box2DTest ${Box2DTestSources})
 target_include_directories(Box2DTest SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
-target_link_libraries(Box2DTest sfml-graphics box2d)
+target_link_libraries(Box2DTest sfml-graphics Box2D)
 add_dependencies(Box2DTest copy_resources)
 
