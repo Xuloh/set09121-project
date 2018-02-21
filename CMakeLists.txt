@@ -11,20 +11,26 @@ SET(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 # Output all DLLs from all libs into main build folder
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
 
-### Add External Dependencies ###
-add_subdirectory("lib/sfml")
-set(SFML_INCS "lib/sfml/include")
-link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
-
 ### copy resources to build directory ###
 add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
 "${PROJECT_SOURCE_DIR}/res"
 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res)
 
-### Box2D lib ###
+### SFML ###
+add_subdirectory("lib/sfml")
+set(SFML_INCS "lib/sfml/include")
+link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+
+### Box2D ###
 add_subdirectory("lib/box2d/Box2D")
 set(BOX2D_INCS "lib/box2d/Box2D")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+
+### ECM Library ###
+file(GLOB_RECURSE SOURCES_ECM lib/ecm/*.cpp lib/ecm/*.h)
+add_library(lib-ecm STATIC ${SOURCES_ECM})
+target_include_directories(lib-ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib-ecm/")
+target_link_libraries(lib-ecm maths-lib)
 
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
