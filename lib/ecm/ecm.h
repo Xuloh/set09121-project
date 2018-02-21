@@ -6,8 +6,9 @@
 namespace ecm {
 	class Component;
 	class Entity;
-	enum EntityManager;
 	class Scene;
+
+	struct EntityManager;
 }
 
 class ecm::Entity {
