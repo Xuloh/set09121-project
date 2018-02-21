@@ -29,8 +29,8 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 ### ECM Library ###
 file(GLOB_RECURSE SOURCES_ECM lib/ecm/*.cpp lib/ecm/*.h)
 add_library(lib-ecm STATIC ${SOURCES_ECM})
-target_include_directories(lib-ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib-ecm/")
-target_link_libraries(lib-ecm maths-lib)
+target_include_directories(lib-ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib/ecm/" SYSTEM PRIVATE ${SFML_INCS})
+target_link_libraries(lib-ecm)
 
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
@@ -38,4 +38,3 @@ add_executable(Box2DTest ${Box2DTestSources})
 target_include_directories(Box2DTest SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
 target_link_libraries(Box2DTest sfml-graphics Box2D)
 add_dependencies(Box2DTest copy_resources)
-
