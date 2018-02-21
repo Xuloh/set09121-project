@@ -78,3 +78,21 @@ bool Component::isForDeletion() const {
 void Component::setForDeletion() {
 	forDeletion = true;
 }
+
+// *** EntityManager class *** //
+
+void EntityManager::update(const double dt) {
+	auto it = entities.begin();
+	while (it != entities.end()) {
+		if ((*it)->isForDeletion())
+			it = entities.erase(it);
+		else if((*it)->isAlive())
+			(*it++)->update(dt);
+	}
+}
+
+void EntityManager::render() const {
+	for (const auto& entity : entities)
+		if (entity->isVisible())
+			entity->render();
+}

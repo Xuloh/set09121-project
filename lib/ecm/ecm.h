@@ -93,3 +93,13 @@ public:
 	virtual void update(double dt) = 0;
 	virtual void render() = 0;
 };
+
+class ecm::EntityManager {
+public:
+	std::vector<std::shared_ptr<Entity>> entities;
+
+	// update all the Manager's Entities that are alive and delete those marked for deletion
+	void update(double dt);
+	// render all the Manager's Entities that are visible
+	void render() const;
+};
