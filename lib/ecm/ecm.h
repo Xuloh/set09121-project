@@ -103,3 +103,18 @@ public:
 	// render all the Manager's Entities that are visible
 	void render() const;
 };
+
+class ecm::Scene {
+protected:
+	EntityManager entityManager;
+
+public:
+	Scene();
+	virtual ~Scene();
+
+	virtual void load() = 0;
+	virtual void update(double dt);
+	virtual void render();
+
+	std::vector<std::shared_ptr<Entity>> &getEntities();
+};

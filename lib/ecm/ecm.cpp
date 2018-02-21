@@ -96,3 +96,20 @@ void EntityManager::render() const {
 		if (entity->isVisible())
 			entity->render();
 }
+
+// *** Scene class *** //
+
+Scene::Scene() = default;
+Scene::~Scene() = default;
+
+void Scene::update(const double dt) {
+	entityManager.update(dt);
+}
+
+void Scene::render() {
+	entityManager.render();
+}
+
+vector<shared_ptr<Entity>>& Scene::getEntities() {
+	return entityManager.entities;
+}
