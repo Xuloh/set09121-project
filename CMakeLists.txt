@@ -36,6 +36,12 @@ file(GLOB_RECURSE SOURCES_RENDERER lib/renderer/*.cpp lib/renderer/*.h)
 add_library(renderer-system STATIC ${SOURCES_RENDERER})
 target_include_directories(renderer-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/renderer" SYSTEM PRIVATE ${SFML_INCS})
 
+### Input System ###
+file(GLOB_RECURSE SOURCES_INPUT lib/input/*.cpp lib/input/*.h)
+add_library(input-system STATIC ${SOURCES_INPUT})
+target_include_directories(input-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/input" SYSTEM PRIVATE ${SFML_INCS})
+target_link_libraries(input-system renderer-system)
+
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
 add_executable(Box2DTest ${Box2DTestSources})
