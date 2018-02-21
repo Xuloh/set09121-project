@@ -30,7 +30,11 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE SOURCES_ECM lib/ecm/*.cpp lib/ecm/*.h)
 add_library(lib-ecm STATIC ${SOURCES_ECM})
 target_include_directories(lib-ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib/ecm/" SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(lib-ecm)
+
+### Renderer System ###
+file(GLOB_RECURSE SOURCES_RENDERER lib/renderer/*.cpp lib/renderer/*.h)
+add_library(renderer-system STATIC ${SOURCES_RENDERER})
+target_include_directories(renderer-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/renderer" SYSTEM PRIVATE ${SFML_INCS})
 
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
