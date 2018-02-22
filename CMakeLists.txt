@@ -42,6 +42,12 @@ add_library(input-system STATIC ${SOURCES_INPUT})
 target_include_directories(input-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/input" SYSTEM PRIVATE ${SFML_INCS})
 target_link_libraries(input-system renderer-system)
 
+### Event System ###
+file(GLOB_RECURSE SOURCES_EVENT lib/event/*.cpp lib/event/*.h)
+add_library(event-system STATIC ${SOURCES_EVENT})
+target_include_directories(event-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/event" SYSTEM PRIVATE ${SFML_INCS})
+target_link_libraries(event-system renderer-system)
+
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
 add_executable(Box2DTest ${Box2DTestSources})
