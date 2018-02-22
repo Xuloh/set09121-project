@@ -48,3 +48,10 @@ add_executable(Box2DTest ${Box2DTestSources})
 target_include_directories(Box2DTest SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
 target_link_libraries(Box2DTest sfml-graphics Box2D)
 add_dependencies(Box2DTest copy_resources)
+
+### Main project : MOIM ###
+file(GLOB_RECURSE MOIM_SOURCES src/*.cpp src/*.h)
+add_executable(moim ${MOIM_SOURCES})
+target_include_directories(moim SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
+target_link_libraries(moim sfml-graphics Box2D lib-ecm renderer-system input-system)
+add_dependencies(moim copy_resources)
