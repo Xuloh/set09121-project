@@ -44,7 +44,7 @@ target_link_libraries(input-system renderer-system)
 
 ### Event System ###
 file(GLOB_RECURSE SOURCES_EVENT lib/event/*.cpp lib/event/*.h)
-add_library(event-system STATIC ${SOURCES_INPUT})
+add_library(event-system STATIC ${SOURCES_EVENT})
 target_include_directories(event-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/event" SYSTEM PRIVATE ${SFML_INCS})
 target_link_libraries(event-system renderer-system)
 
