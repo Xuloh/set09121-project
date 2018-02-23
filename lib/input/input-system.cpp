@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <string>
 #include <unordered_map>
 #include <set>
@@ -53,4 +52,8 @@ void input::setCustomActive() {
 
 bool input::isControlPressed(const string& control) {
 	return renderer::getWindow().hasFocus() && Keyboard::isKeyPressed(activeKeymap->at(control));
+}
+
+Keyboard::Key input::getKey(const string& control) {
+	return controls.count(control) ? activeKeymap->at(control) : Keyboard::Unknown;
 }
