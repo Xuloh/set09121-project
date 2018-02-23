@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "SFML/Window.hpp"
+#include <SFML/Window.hpp>
 
 namespace input {
 	// register a new control name
@@ -22,6 +22,12 @@ namespace input {
 	// set active keymap to custom
 	void setCustomActive();
 
-	// determines if the given control is pressed, always returns false when the window does not have the focus
+	// determines if the given control is pressed
+	// returns false when the window does not have the focus
+	// also returns false if the given control does not exist
 	bool isControlPressed(const std::string& control);
+
+	// returns the key associated with the given control in the active keymap
+	// returns the unknown key sf::Keyboard::Unknown if the given control does not exist
+	sf::Keyboard::Key getKey(const std::string& control);
 }
