@@ -34,7 +34,7 @@ namespace event {
 
 class event::EventHandler {
 public:
-	EventHandler() = delete;
+	EventHandler() = default;
 	virtual ~EventHandler() = default;
 
 	virtual void handleEvent(const sf::Event& event) = 0;
