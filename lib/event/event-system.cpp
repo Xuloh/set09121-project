@@ -6,26 +6,26 @@ using namespace sf;
 using namespace std;
 using namespace event;
 
-static unordered_map<Event::EventType, set<void(*)(Event)>> eventHandlersFunctions;
-static unordered_map<Event::EventType, set<shared_ptr<EventHandler>>> eventHandlers;
+static unordered_map<Event::EventType, set<eventFunction>> eventHandlersFunctions;
+static unordered_map<Event::EventType, set<EventHandler* const>> eventHandlers;
 
-void event::registerHandler(const Event::EventType eventType, const shared_ptr<EventHandler>& eventHandler) {
+void event::registerHandler(const Event::EventType eventType, EventHandler* const eventHandler) {
 	if (!eventHandlers.count(eventType))
-		eventHandlers.insert({ eventType, set<shared_ptr<EventHandler>>() });
+		eventHandlers.insert({ eventType, set<EventHandler* const>() });
 	eventHandlers[eventType].insert(eventHandler);
 }
 
-void event::unregisterHandler(const Event::EventType eventType, const shared_ptr<EventHandler>& eventHandler) {
+void event::unregisterHandler(const Event::EventType eventType, EventHandler* const eventHandler) {
 	eventHandlers[eventType].erase(eventHandler);
 }
 
-void event::registerHandler(const Event::EventType eventType, void(*eventHandler)(Event)) {
+void event::registerHandler(const Event::EventType eventType, const eventFunction eventHandler) {
 	if (!eventHandlersFunctions.count(eventType))
-		eventHandlersFunctions.insert({ eventType, set<void(*)(Event)>() });
+		eventHandlersFunctions.insert({ eventType, set<eventFunction>() });
 	eventHandlersFunctions[eventType].insert(eventHandler);
 }
 
-void event::unregisterHandler(const Event::EventType eventType, void(*eventHandler)(Event)) {
+void event::unregisterHandler(const Event::EventType eventType, const eventFunction eventHandler) {
 	eventHandlersFunctions[eventType].erase(eventHandler);
 }
 
