@@ -7,6 +7,9 @@ namespace event {
 	// the EventHandler can be registered for a certain event type using event::registerHandler
 	class EventHandler;
 
+	// defines a pointer to a function that takes a sf::Event parameter and returns void
+	typedef void(*eventFunction)(const sf::Event&);
+
 	// register the given EventHandler whose handleEvent method will be called each time an Event of the given type is processed
 	// if this the handler is only registered for a single event type, it will only be called for that type
 	// however if the same handler is registered for several event types, the handler should check the type of the event that was passed
