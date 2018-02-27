@@ -13,20 +13,20 @@ namespace event {
 	// register the given EventHandler whose handleEvent method will be called each time an Event of the given type is processed
 	// if this the handler is only registered for a single event type, it will only be called for that type
 	// however if the same handler is registered for several event types, the handler should check the type of the event that was passed
-	void registerHandler(sf::Event::EventType eventType, const std::shared_ptr<EventHandler>& eventHandler);
+	void registerHandler(sf::Event::EventType eventType, EventHandler* eventHandler);
 	
 	// unregister the given EventHandler from all the events of the given type
 	// does not unregister the EventHandler from the other types it may have been registered for
-	void unregisterHandler(sf::Event::EventType eventType, const std::shared_ptr<EventHandler>& eventHandler);
+	void unregisterHandler(sf::Event::EventType eventType, EventHandler* eventHandler);
 	
 	// register a function that will be called each time an Event of the given type is processed
 	// if this the handler is only registered for a single event type, it will only be called for that type
 	// however if the same handler is registered for several event types, the handler should check the type of the event that was passed
-	void registerHandler(sf::Event::EventType eventType, void(*eventHandler)(sf::Event));
+	void registerHandler(sf::Event::EventType eventType, eventFunction eventHandler);
 	
 	// unregister the given function from all the events of the given type
 	// does not unregister the function from the other types it may have been registered for
-	void unregisterHandler(sf::Event::EventType eventType, void(*eventHandler)(sf::Event));
+	void unregisterHandler(sf::Event::EventType eventType, eventFunction eventHandler);
 	
 	// poll all the events from the renderer's window and call all the handlers registered for the event's type
 	void update();
