@@ -1,72 +1,67 @@
 #pragma once
 #include <event-system.h>
 #include <SFML/Graphics.hpp>
+#include <ecm.h>
 
+// regroups a bunch of Components that can be used to create simple GUIs
 namespace gui {
-	class GUIElement : public event::EventHandler {
+
+	// a Component that handles a single sf::Text
+	class TextComponent : public ecm::Component {
 	protected:
-		bool mouseInArea = false;
+		std::shared_ptr<sf::Text> text;
 	public:
-		std::shared_ptr<sf::FloatRect> hitArea;
+		
+		TextComponent() = delete;
+		explicit TextComponent(ecm::Entity* parent);
+		
+		~TextComponent() = default;
 
-		explicit GUIElement(const sf::FloatRect& hitArea);
-		GUIElement() = default;
-		~GUIElement() = default;
+		void update(double dt) override;
+		void render() override;
 
-		virtual void render() = 0;
+		sf::Text& getText() const;
 
-		virtual void onMouseEnter(const sf::Event& event) = 0;
-		virtual void onMouseExit(const sf::Event& event) = 0;
-		virtual void onClick(const sf::Event& event) = 0;
+		template<typename... Targs> void setText(Targs... params) {
+			text.reset(new sf::Text(params...));
+		}
+	};
+
+	// a Component that reacts to clicks on its sibling TextComponent (must be bound to an Entity that has a TextComponent)
+	class ClickComponent : public ecm::Component, public event::EventHandler {
+	protected:
+		sf::Text& targetText;
+	public:
+		event::eventFunction onClick;
+
+		ClickComponent() = delete;
+		explicit ClickComponent(ecm::Entity* parent);
+		
+		~ClickComponent();
+
+		void update(double dt) override;
+		void render() override;
+
 		void handleEvent(const sf::Event& event) override;
 	};
 
-	class Label : public GUIElement {
+	// a Component that reacts to mouse movements over its sibling TextComponent (must be bound to an Entity that has a TextComponent)
+	class MouseHoverComponent : public ecm::Component, public event::EventHandler {
+	protected:
+		sf::Text& targetText;
+		bool isMouseInArea;
 	public:
-		std::shared_ptr<sf::Text> text;
-		
-		explicit Label(const sf::FloatRect& hitArea);
-		Label() = default;
-		~Label() = default;
+		sf::Color baseColor;
+		sf::Color hoverColor;
 
+		MouseHoverComponent() = delete;
+		explicit MouseHoverComponent(ecm::Entity* parent);
+
+		~MouseHoverComponent();
+
+		void update(double dt) override;
 		void render() override;
 
-		void onMouseEnter(const sf::Event& event) override;
-		void onMouseExit(const sf::Event& event) override;
-		void onClick(const sf::Event& event) override;
 		void handleEvent(const sf::Event& event) override;
-	};
-
-	class Button : public GUIElement {
-	public:
-		std::shared_ptr<sf::Color> baseColor;
-		std::shared_ptr<sf::Color> hoverColor;
-		
-		std::shared_ptr<sf::Text> text;
-
-		event::eventFunction onClickHandler = nullptr;
-
-		explicit Button(const sf::FloatRect& hitArea);
-		Button() = default;
-		~Button();
-
-		void render() override;
-		void onMouseEnter(const sf::Event& event) override;
-		void onMouseExit(const sf::Event& event) override;
-		void onClick(const sf::Event& event) override;
-	};
-
-	class GUIFactory {
-	public:
-		std::shared_ptr<sf::Font> font;
-		std::shared_ptr<sf::Color> baseColor;
-		std::shared_ptr<sf::Color> hoverColor;
-		float baseCharacterSize;
-
-		explicit GUIFactory(float baseCharacterSize);
-		~GUIFactory() = default;
-
-		std::shared_ptr<Label> makeLabel(const std::string& text, const sf::Vector2f& position, float characterSize = 1.f) const;
-		std::shared_ptr<Button> makeButton(const std::string& text, const sf::Vector2f& position, event::eventFunction onClickHandler = nullptr, float characterSize = 1.f) const;
 	};
 }

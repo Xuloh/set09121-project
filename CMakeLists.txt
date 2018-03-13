@@ -52,7 +52,7 @@ target_link_libraries(event-system renderer-system)
 file(GLOB_RECURSE SOURCES_GUI lib/gui/*.cpp lib/gui/*.h)
 add_library(gui-system STATIC ${SOURCES_GUI})
 target_include_directories(gui-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/gui" SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(gui-system renderer-system event-system)
+target_link_libraries(gui-system renderer-system event-system lib-ecm)
 
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
