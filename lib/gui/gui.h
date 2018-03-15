@@ -2,9 +2,32 @@
 #include <event-system.h>
 #include <SFML/Graphics.hpp>
 #include <ecm.h>
+#include <memory>
 
 // regroups a bunch of Components that can be used to create simple GUIs
 namespace gui {
+
+	// a struct that holds values to be used by a GUIFactory
+	struct GUISettings {
+		sf::Color baseColor;
+		sf::Color hoverColor;
+		sf::Font* font;
+		float characterSize;
+	};
+
+	// a class to make the creation of GUI elements easier
+	class GUIFactory {
+	public:
+		GUISettings settings;
+
+		GUIFactory() = delete;
+		GUIFactory(GUISettings settings);
+
+		~GUIFactory() = default;
+
+		std::shared_ptr<ecm::Entity> makeLabel(sf::String text) const;
+		std::shared_ptr<ecm::Entity> makeButton(sf::String text, event::eventFunction onClickHandler) const;
+	};
 
 	// a Component that handles a single sf::Text
 	class TextComponent : public ecm::Component {

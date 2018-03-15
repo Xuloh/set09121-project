@@ -1,10 +1,47 @@
-#include "gui.h"
 #include <memory>
+#include "gui.h"
 
 using namespace gui;
 using namespace sf;
 using namespace std;
 using namespace event;
+
+// *** GUIFactory class *** //
+
+GUIFactory::GUIFactory(const GUISettings settings) : settings(settings) {}
+
+std::shared_ptr<ecm::Entity> GUIFactory::makeLabel(String text) const {
+	auto label = make_shared<ecm::Entity>();
+
+	auto labelText = label->addComponent<TextComponent>();
+	labelText->setText();
+	labelText->getText().setFont(*settings.font);
+	labelText->getText().setCharacterSize(settings.characterSize);
+	labelText->getText().setFillColor(settings.baseColor);
+	labelText->getText().setString(text);
+
+	return label;
+}
+
+std::shared_ptr<ecm::Entity> GUIFactory::makeButton(String text, const eventFunction onClickHandler) const {
+	auto button = make_shared<ecm::Entity>();
+
+	auto buttonText = button->addComponent<TextComponent>();
+	buttonText->setText();
+	buttonText->getText().setFont(*settings.font);
+	buttonText->getText().setCharacterSize(settings.characterSize);
+	buttonText->getText().setFillColor(settings.baseColor);
+	buttonText->getText().setString(text);
+
+	auto buttonClick = button->addComponent<ClickComponent>();
+	buttonClick->onClick = onClickHandler;
+
+	auto buttonHover = button->addComponent<MouseHoverComponent>();
+	buttonHover->baseColor = settings.baseColor;
+	buttonHover->hoverColor = settings.hoverColor;
+
+	return button;
+}
 
 // *** TextComponent class *** //
 
