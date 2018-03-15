@@ -15,6 +15,7 @@ protected:
 	std::vector<std::shared_ptr<Component>> components;
 
 	sf::Vector2f position;
+	sf::Vector2f origin;
 	float rotation;
 
 	bool alive; // whether the Entity should be updated
@@ -32,6 +33,9 @@ public:
 
 	const sf::Vector2f& getPosition() const;
 	void setPosition(const sf::Vector2f& position);
+
+	const sf::Vector2f& getOrigin() const;
+	void setOrigin(const sf::Vector2f& origin);
 
 	float getRotation() const;
 	void setRotation(float rotation);
