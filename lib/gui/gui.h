@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <ecm.h>
 #include <memory>
+#include <vector>
 
 // regroups a bunch of Components that can be used to create simple GUIs
 namespace gui {
@@ -86,5 +87,45 @@ namespace gui {
 		void render() override;
 
 		void handleEvent(const sf::Event& event) override;
+	};
+
+	// associates an Entity with its position within a LayoutComponent
+	struct LayoutItem {
+		std::shared_ptr<ecm::Entity> entity;
+		// the entity's horizontal position relative the layout's width
+		float x;
+		// the entity's vertical position relative to the layout's height
+		float y;
+	};
+
+	// a simple layout system, this component can contain other entities and position them relative to its own height and width
+	class LayoutComponent : public ecm::Component, public event::EventHandler {
+	protected:
+		std::vector<LayoutItem> items;
+
+		float width;
+		float height;
+
+		bool updateLayout;
+
+		void updateSize();
+	public:
+		// the layout's width relative to the window's width (ex: 0.5 is half the window's width)
+		float x;
+		// the layout's height relative to the window's height (ex: 0.5 is half the window's height)
+		float y;
+
+		LayoutComponent() = delete;
+		explicit LayoutComponent(ecm::Entity* parent);
+		explicit LayoutComponent(ecm::Entity* parent, float x, float y);
+
+		~LayoutComponent();
+
+		void update(double dt) override;
+		void render() override;
+
+		void handleEvent(const sf::Event& event) override;
+
+		void addItem(std::shared_ptr<ecm::Entity> entity, float x, float y);
 	};
 }
