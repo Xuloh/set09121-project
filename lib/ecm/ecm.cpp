@@ -33,6 +33,14 @@ void Entity::setPosition(const Vector2f& position) {
 	this->position = position;
 }
 
+const sf::Vector2f& Entity::getOrigin() const {
+	return origin;
+}
+
+void Entity::setOrigin(const Vector2f& origin) {
+	this->origin = origin;
+}
+
 float Entity::getRotation() const {
 	return rotation;
 }
