@@ -31,6 +31,14 @@ void MainMenuScene::load() {
 	auto exitButton = guiFactory.makeButton("Exit", &closeWindow);
 	exitButton->setPosition({ 48, 48 + optionsButton->getPosition().y + optionsButton->getComponent<TextComponent>()->getText().getLocalBounds().height });
 
+	auto layoutContainer = make_shared<Entity>();
+	auto layout = layoutContainer->addComponent<LayoutComponent>(1.f, 1.f);
+	layout->addItem(title, 0.5f, 0.2f);
+	layout->addItem(playButton, 0.5f, 0.4f);
+	layout->addItem(optionsButton, 0.5f, 0.6f);
+	layout->addItem(exitButton, 0.5f, 0.8f);
+
+	entityManager.entities.push_back(layoutContainer);
 	entityManager.entities.push_back(title);
 	entityManager.entities.push_back(playButton);
 	entityManager.entities.push_back(optionsButton);
