@@ -17,66 +17,19 @@ shared_ptr<Scene> mainMenu;
 // *** MainMenuScene class *** //
 
 void MainMenuScene::load() {
-	auto title = make_shared<Entity>();
+	auto guiFactory = GUIFactory({ Color::White, Color::Cyan, &font, 32.f });
+
+	auto title = guiFactory.makeLabel("MOIM : Massive Objects Influence Motion");
 	title->setPosition({ 24, 24 });
 
-	auto titleText = title->addComponent<TextComponent>();
-	titleText->setText();
-	titleText->getText().setFont(font);
-	titleText->getText().setCharacterSize(24);
-	titleText->getText().setFillColor(Color::White);
-	titleText->getText().setString("MOIM : Massive Objects Influence Motion");
+	auto playButton = guiFactory.makeButton("Play", &playOnClick);
+	playButton->setPosition({ 48, 48 + title->getPosition().y + title->getComponent<TextComponent>()->getText().getLocalBounds().height });
 
-	auto playButton = make_shared<Entity>();
-	playButton->setPosition({48, 48 + title->getPosition().y + titleText->getText().getLocalBounds().height});
+	auto optionsButton = guiFactory.makeButton("Options", &optionsOnClick);
+	optionsButton->setPosition({ 48, 48 + playButton->getPosition().y + playButton->getComponent<TextComponent>()->getText().getLocalBounds().height });
 
-	auto playText = playButton->addComponent<TextComponent>();
-	playText->setText();
-	playText->getText().setFont(font);
-	playText->getText().setCharacterSize(24);
-	playText->getText().setFillColor(Color::White);
-	playText->getText().setString("Play");
-
-	auto playClick = playButton->addComponent<ClickComponent>();
-	playClick->onClick = &playOnClick;
-
-	auto playHover = playButton->addComponent<MouseHoverComponent>();
-	playHover->baseColor = Color::White;
-	playHover->hoverColor = Color::Cyan;
-
-	auto optionsButton = make_shared<Entity>();
-	optionsButton->setPosition({ 48, 48 + playButton->getPosition().y + playText->getText().getLocalBounds().height });
-
-	auto optionsText = optionsButton->addComponent<TextComponent>();
-	optionsText->setText();
-	optionsText->getText().setFont(font);
-	optionsText->getText().setCharacterSize(24);
-	optionsText->getText().setFillColor(Color::White);
-	optionsText->getText().setString("Options");
-
-	auto optionsClick = optionsButton->addComponent<ClickComponent>();
-	optionsClick->onClick = &optionsOnClick;
-
-	auto optionsHover = optionsButton->addComponent<MouseHoverComponent>();
-	optionsHover->baseColor = Color::White;
-	optionsHover->hoverColor = Color::Cyan;
-
-	auto exitButton = make_shared<Entity>();
-	exitButton->setPosition({ 48, 48 + optionsButton->getPosition().y + optionsText->getText().getLocalBounds().height });
-
-	auto exitText = exitButton->addComponent<TextComponent>();
-	exitText->setText();
-	exitText->getText().setFont(font);
-	exitText->getText().setCharacterSize(24);
-	exitText->getText().setFillColor(Color::White);
-	exitText->getText().setString("Exit");
-
-	auto exitClick = exitButton->addComponent<ClickComponent>();
-	exitClick->onClick = &closeWindow;
-
-	auto exitHover = exitButton->addComponent<MouseHoverComponent>();
-	exitHover->baseColor = Color::White;
-	exitHover->hoverColor = Color::Cyan;
+	auto exitButton = guiFactory.makeButton("Exit", &closeWindow);
+	exitButton->setPosition({ 48, 48 + optionsButton->getPosition().y + optionsButton->getComponent<TextComponent>()->getText().getLocalBounds().height });
 
 	entityManager.entities.push_back(title);
 	entityManager.entities.push_back(playButton);
