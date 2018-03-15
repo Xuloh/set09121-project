@@ -20,16 +20,16 @@ void MainMenuScene::load() {
 	auto guiFactory = GUIFactory({ Color::White, Color::Cyan, &font, 32.f });
 
 	auto title = guiFactory.makeLabel("MOIM : Massive Objects Influence Motion");
-	title->setPosition({ 24, 24 });
+	title->setOrigin({ 0.5f, 0.5f });
 
 	auto playButton = guiFactory.makeButton("Play", &playOnClick);
-	playButton->setPosition({ 48, 48 + title->getPosition().y + title->getComponent<TextComponent>()->getText().getLocalBounds().height });
+	playButton->setOrigin({ 0.5f, 0.5f });
 
 	auto optionsButton = guiFactory.makeButton("Options", &optionsOnClick);
-	optionsButton->setPosition({ 48, 48 + playButton->getPosition().y + playButton->getComponent<TextComponent>()->getText().getLocalBounds().height });
+	optionsButton->setOrigin({ 0.5f, 0.5f });
 
 	auto exitButton = guiFactory.makeButton("Exit", &closeWindow);
-	exitButton->setPosition({ 48, 48 + optionsButton->getPosition().y + optionsButton->getComponent<TextComponent>()->getText().getLocalBounds().height });
+	exitButton->setOrigin({ 0.5f, 0.5f });
 
 	auto layoutContainer = make_shared<Entity>();
 	auto layout = layoutContainer->addComponent<LayoutComponent>(1.f, 1.f);
