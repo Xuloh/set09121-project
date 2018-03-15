@@ -16,7 +16,7 @@ void event::registerHandler(const Event::EventType eventType, EventHandler* cons
 }
 
 void event::unregisterHandler(const Event::EventType eventType, EventHandler* const eventHandler) {
-	if(eventHandlers.count(eventType))
+	if(!eventHandlers.empty() && eventHandlers.count(eventType))
 		eventHandlers[eventType].erase(eventHandler);
 }
 
@@ -27,7 +27,7 @@ void event::registerHandler(const Event::EventType eventType, const eventFunctio
 }
 
 void event::unregisterHandler(const Event::EventType eventType, const eventFunction eventHandler) {
-	if(eventHandlersFunctions.count(eventType))
+	if(!eventHandlersFunctions.empty() && eventHandlersFunctions.count(eventType))
 		eventHandlersFunctions[eventType].erase(eventHandler);
 }
 
