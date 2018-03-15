@@ -34,7 +34,7 @@ ClickComponent::~ClickComponent() {
 
 void ClickComponent::handleEvent(const sf::Event& event) {
 	if (onClick != nullptr && event.mouseButton.button == Mouse::Left && targetText.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
-		onClick(this, event);
+		onClick(event);
 }
 
 void ClickComponent::update(double dt) {}
