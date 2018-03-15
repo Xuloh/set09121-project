@@ -1,12 +1,15 @@
 #include <ecm.h>
-#include <gui.h>
 #include <event-system.h>
 #include <renderer-system.h>
 #include <input-system.h>
 #include <SFML/Graphics.hpp>
+#include "Scenes.h"
+#include "main.h"
 
 using namespace std;
 using namespace sf;
+
+Font font;
 
 void closeWindow(const Event& event) {
 	renderer::getWindow().close();
@@ -21,16 +24,26 @@ void load() {
 	// register window handlers
 	event::registerHandler(Event::Closed, &closeWindow);
 	event::registerHandler(Event::KeyReleased, &closeWindowOnEscapePressed);
+
+	font.loadFromFile("res/fonts/FiraCode-Medium.ttf");
+
+	mainMenu.reset(new MainMenuScene());
+	mainMenu->load();
+
+	activeScene = mainMenu;
 }
 
 void update() {
 	static Clock clock;
-	auto dt = clock.restart().asSeconds();
+	const auto dt = clock.restart().asSeconds();
 
 	event::update();
+
+	activeScene->update(dt);
 }
 
 void render() {
+	activeScene->render();
 	renderer::render();
 }
 
