@@ -49,6 +49,8 @@ TextComponent::TextComponent(ecm::Entity* parent) : Component(parent) {}
 
 void TextComponent::update(double dt) {
 	text->setPosition(parent->getPosition());
+	text->setOrigin({ text->getLocalBounds().width * parent->getOrigin().x, text->getLocalBounds().height * parent->getOrigin().y });
+	text->setRotation(parent->getRotation());
 }
 
 void TextComponent::render() {
