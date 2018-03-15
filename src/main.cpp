@@ -3,6 +3,7 @@
 #include <renderer-system.h>
 #include <input-system.h>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "Scenes.h"
 #include "main.h"
 
@@ -20,10 +21,15 @@ void closeWindowOnEscapePressed(const Event& event) {
 		closeWindow(event);
 }
 
+void resizeView(const Event& event) {
+	renderer::getWindow().setView(View({ 0.f, 0.f, float(event.size.width), float(event.size.height) }));
+}
+
 void load() {
 	// register window handlers
 	event::registerHandler(Event::Closed, &closeWindow);
 	event::registerHandler(Event::KeyReleased, &closeWindowOnEscapePressed);
+	event::registerHandler(Event::Resized, &resizeView);
 
 	font.loadFromFile("res/fonts/FiraCode-Medium.ttf");
 
@@ -48,7 +54,7 @@ void render() {
 }
 
 int main() {
-	RenderWindow window(VideoMode(800, 600), "MOIM", Style::Titlebar | Style::Close);
+	RenderWindow window(VideoMode(800, 600), "MOIM");
 	renderer::initialise(window);
 
 	load();
