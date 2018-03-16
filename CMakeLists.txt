@@ -54,6 +54,12 @@ add_library(gui-system STATIC ${SOURCES_GUI})
 target_include_directories(gui-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/gui" SYSTEM PRIVATE ${SFML_INCS})
 target_link_libraries(gui-system renderer-system event-system lib-ecm)
 
+### Physics System ###
+file(GLOB_RECURSE SOURCES_PHYSICS lib/physics/*.cpp lib/physics/*.h)
+add_library(physics-system STATIC ${SOURCES_PHYSICS})
+target_include_directories(physics-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/physics" SYSTEM PRIVATE ${SFML_INCS} SYSTEM PRIVATE ${BOX2D_INCS})
+target_link_libraries(physics-system renderer-system Box2D)
+
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
 add_executable(Box2DTest ${Box2DTestSources})
@@ -65,5 +71,5 @@ add_dependencies(Box2DTest copy_resources)
 file(GLOB_RECURSE MOIM_SOURCES src/*.cpp src/*.h)
 add_executable(moim ${MOIM_SOURCES})
 target_include_directories(moim SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
-target_link_libraries(moim sfml-graphics Box2D lib-ecm renderer-system input-system event-system gui-system)
+target_link_libraries(moim sfml-graphics Box2D lib-ecm renderer-system input-system event-system gui-system physics-system)
 add_dependencies(moim copy_resources)
