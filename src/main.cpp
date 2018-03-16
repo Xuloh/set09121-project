@@ -4,6 +4,7 @@
 #include <input-system.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <physics-system.h>
 #include "Scenes.h"
 #include "main.h"
 
@@ -45,6 +46,8 @@ void update() {
 
 	event::update();
 
+	physics::update(dt);
+
 	activeScene->update(dt);
 }
 
@@ -55,7 +58,9 @@ void render() {
 
 int main() {
 	RenderWindow window(VideoMode(800, 600), "MOIM");
+
 	renderer::initialise(window);
+	physics::initialise();
 
 	load();
 
@@ -66,6 +71,7 @@ int main() {
 		window.display();
 	}
 	
+	physics::shutdown();
 	renderer::shutdown();
 
 	return 0;
