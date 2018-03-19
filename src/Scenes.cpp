@@ -1,6 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <gui.h>
-#include <ecm.h>
 #include <memory>
 #include <iostream>
 #include "Scenes.h"

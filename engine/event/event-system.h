@@ -1,6 +1,6 @@
 #pragma once
-#include <renderer-system.h>
 #include <memory>
+#include "renderer/renderer-system.h"
 
 namespace event {
 	// asbract class, subclasses must implement the handleEvent method, that is called when a relevant event is processed

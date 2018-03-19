@@ -26,39 +26,10 @@ add_subdirectory("lib/box2d/Box2D")
 set(BOX2D_INCS "lib/box2d/Box2D")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
-### ECM Library ###
-file(GLOB_RECURSE SOURCES_ECM lib/ecm/*.cpp lib/ecm/*.h)
-add_library(lib-ecm STATIC ${SOURCES_ECM})
-target_include_directories(lib-ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib/ecm/" SYSTEM PRIVATE ${SFML_INCS})
-
-### Renderer System ###
-file(GLOB_RECURSE SOURCES_RENDERER lib/renderer/*.cpp lib/renderer/*.h)
-add_library(renderer-system STATIC ${SOURCES_RENDERER})
-target_include_directories(renderer-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/renderer" SYSTEM PRIVATE ${SFML_INCS})
-
-### Input System ###
-file(GLOB_RECURSE SOURCES_INPUT lib/input/*.cpp lib/input/*.h)
-add_library(input-system STATIC ${SOURCES_INPUT})
-target_include_directories(input-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/input" SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(input-system renderer-system)
-
-### Event System ###
-file(GLOB_RECURSE SOURCES_EVENT lib/event/*.cpp lib/event/*.h)
-add_library(event-system STATIC ${SOURCES_EVENT})
-target_include_directories(event-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/event" SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(event-system renderer-system)
-
-### GUI System ###
-file(GLOB_RECURSE SOURCES_GUI lib/gui/*.cpp lib/gui/*.h)
-add_library(gui-system STATIC ${SOURCES_GUI})
-target_include_directories(gui-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/gui" SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(gui-system renderer-system event-system lib-ecm)
-
-### Physics System ###
-file(GLOB_RECURSE SOURCES_PHYSICS lib/physics/*.cpp lib/physics/*.h)
-add_library(physics-system STATIC ${SOURCES_PHYSICS})
-target_include_directories(physics-system INTERFACE "${CMAKE_SOURCE_DIR}/lib/physics" SYSTEM PRIVATE ${SFML_INCS} SYSTEM PRIVATE ${BOX2D_INCS})
-target_link_libraries(physics-system renderer-system Box2D)
+### Engine ###
+file(GLOB_RECURSE SOURCES_ENGINE engine/*.cpp engine/*.h)
+add_library(engine STATIC ${SOURCES_ENGINE})
+target_include_directories(engine SYSTEM PUBLIC "${CMAKE_SOURCE_DIR}/engine" PRIVATE ${SFML_INCS} PRIVATE ${BOX2D_INCS})
 
 ### Box2D test ###
 file(GLOB_RECURSE Box2DTestSources box2dtest/*.cpp box2dtest/*.h)
@@ -70,6 +41,6 @@ add_dependencies(Box2DTest copy_resources)
 ### Main project : MOIM ###
 file(GLOB_RECURSE MOIM_SOURCES src/*.cpp src/*.h)
 add_executable(moim ${MOIM_SOURCES})
-target_include_directories(moim SYSTEM PRIVATE ${SFML_INCS} ${BOX2D_INCS})
-target_link_libraries(moim sfml-graphics Box2D lib-ecm renderer-system input-system event-system gui-system physics-system)
+target_include_directories(moim SYSTEM PRIVATE ${SFML_INCS} PRIVATE ${BOX2D_INCS})
+target_link_libraries(moim sfml-graphics Box2D engine)
 add_dependencies(moim copy_resources)

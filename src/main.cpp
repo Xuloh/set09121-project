@@ -1,10 +1,6 @@
-#include <ecm.h>
-#include <event-system.h>
-#include <renderer-system.h>
-#include <input-system.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <physics-system.h>
+#include <engine.h>
 #include "Scenes.h"
 #include "main.h"
 

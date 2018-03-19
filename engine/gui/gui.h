@@ -1,9 +1,9 @@
 #pragma once
-#include <event-system.h>
 #include <SFML/Graphics.hpp>
-#include <ecm.h>
 #include <memory>
 #include <vector>
+#include "event/event-system.h"
+#include "ecm/ecm.h"
 
 // regroups a bunch of Components that can be used to create simple GUIs
 namespace gui {

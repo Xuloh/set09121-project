@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ecm.h>
+#include <engine.h>
 #include <memory>
 
 extern std::shared_ptr<ecm::Scene> activeScene;
