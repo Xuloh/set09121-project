@@ -1,0 +1,10 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+install:
+- cmd: git submodule update --init --recursive && cmake -G "Visual Studio 15 2017 Win64"
+build:
+  project: Games_Engineering_Project.sln
+  verbosity: minimal
