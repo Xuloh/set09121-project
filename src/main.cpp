@@ -19,7 +19,10 @@ void closeWindowOnEscapePressed(const Event& event) {
 }
 
 void resizeView(const Event& event) {
-	renderer::getWindow().setView(View({ 0.f, 0.f, float(event.size.width), float(event.size.height) }));
+    const Vector2f newSize = { float(event.size.width), float(event.size.height) };
+    renderer::getSceneView().setSize(newSize);
+    renderer::getGUIView().setCenter(newSize * .5f);
+    renderer::getGUIView().setSize(newSize);
 }
 
 void load() {
