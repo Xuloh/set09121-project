@@ -35,6 +35,9 @@ void renderer::initialise(RenderWindow& window) {
 void renderer::shutdown() {
 	while (!drawables.empty())
 		drawables.pop();
+
+    while (!gui.empty())
+        gui.pop();
 }
 
 void renderer::render() {
