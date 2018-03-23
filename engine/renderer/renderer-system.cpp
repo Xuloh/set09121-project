@@ -2,6 +2,7 @@
 #include <queue>
 #include <memory>
 #include "renderer-system.h"
+#include "event/event-system.h"
 
 using namespace std;
 using namespace sf;
@@ -11,6 +12,13 @@ static queue<const Drawable*> gui;
 static RenderWindow* renderWindow;
 static shared_ptr<View> sceneView;
 static shared_ptr<View> guiView;
+
+static void resizeView(const Event& event) {
+    const Vector2f newSize = { float(event.size.width), float(event.size.height) };
+    sceneView->setSize(newSize);
+    guiView->setCenter(newSize * .5f);
+    guiView->setSize(newSize);
+}
 
 RenderWindow& renderer::getWindow() {
 	return *renderWindow;
@@ -30,6 +38,8 @@ void renderer::initialise(RenderWindow& window) {
     const auto windowSize = Vector2f(window.getSize());
     sceneView.reset(new View({ 0.f, -windowSize.y, windowSize.x, windowSize.y }));
     guiView.reset(new View({ 0.f, 0.f, windowSize.x, windowSize.y }));
+
+    event::registerHandler(Event::Resized, &resizeView);
 }
 
 void renderer::shutdown() {
@@ -38,6 +48,8 @@ void renderer::shutdown() {
 
     while (!gui.empty())
         gui.pop();
+
+    event::unregisterHandler(Event::Resized, &resizeView);
 }
 
 void renderer::render() {

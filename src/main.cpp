@@ -18,18 +18,10 @@ void closeWindowOnEscapePressed(const Event& event) {
 		closeWindow(event);
 }
 
-void resizeView(const Event& event) {
-    const Vector2f newSize = { float(event.size.width), float(event.size.height) };
-    renderer::getSceneView().setSize(newSize);
-    renderer::getGUIView().setCenter(newSize * .5f);
-    renderer::getGUIView().setSize(newSize);
-}
-
 void load() {
 	// register window handlers
 	event::registerHandler(Event::Closed, &closeWindow);
 	event::registerHandler(Event::KeyReleased, &closeWindowOnEscapePressed);
-	event::registerHandler(Event::Resized, &resizeView);
 
 	font.loadFromFile("res/fonts/FiraCode-Medium.ttf");
 
