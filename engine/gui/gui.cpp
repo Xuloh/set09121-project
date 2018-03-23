@@ -54,7 +54,7 @@ void TextComponent::update(double dt) {
 }
 
 void TextComponent::render() {
-	renderer::queue(text.get());
+	renderer::queue(text.get(), true);
 }
 
 Text& TextComponent::getText() const {
@@ -128,7 +128,6 @@ void LayoutComponent::update(double dt) {
 
 void LayoutComponent::render() {}
 
-
 void LayoutComponent::handleEvent(const Event& event) {
 	updateLayout = true;
 	updateSize();
@@ -138,8 +137,7 @@ void LayoutComponent::addItem(std::shared_ptr<ecm::Entity> entity, float x, floa
 	items.push_back({ entity, x, y });
 }
 
-
 void LayoutComponent::updateSize() {
-	width = renderer::getWindow().getView().getSize().x * x;
-	height = renderer::getWindow().getView().getSize().y * y;
+	width = renderer::getGUIView().getSize().x * x;
+	height = renderer::getGUIView().getSize().y * y;
 }
