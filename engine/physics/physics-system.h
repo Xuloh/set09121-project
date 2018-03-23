@@ -30,8 +30,10 @@ namespace physics {
 	//
 	// Note : this function's name breaks the naming convention for readability purposes
 	// ReSharper disable once CppInconsistentNaming
-	inline sf::Vector2f b2Vec2_To_Vector2f(const b2Vec2& vector) {
-		return { vector.x * scale, renderer::getWindow().getSize().y - vector.y * scale };
+	inline sf::Vector2f b2Vec2_To_Vector2f(const b2Vec2& vector, bool scale = true) {
+        if(scale)
+		    return { vector.x * scale, vector.y * scale };
+        return { vector.x, vector.y };
 	}
 
 	// Converts SFML coordinates to Box2D coordinates
@@ -39,18 +41,15 @@ namespace physics {
 	//
 	// Note : this function's name breaks the naming convention for readability purposes
 	// ReSharper disable once CppInconsistentNaming
-	inline b2Vec2 Vector2f_To_b2Vec2(const sf::Vector2f vector) {
-		return { vector.x * scaleInv, renderer::getWindow().getSize().y - vector.y * scaleInv };
+	inline b2Vec2 Vector2f_To_b2Vec2(const sf::Vector2f vector, bool scale = true) {
+        if(scale)
+		    return { vector.x * scaleInv, vector.y * scaleInv };
+        return { vector.x, vector.y };
 	}
 
-	// Converts meters (used within Box2D) to pixels (used within SFML)
-	inline float metersToPixels(const float meters) {
-		return meters * scale;
-	}
-
-	// Converts pixels (used within SFML) to meters (used within Box2D)
-	inline float pixelsToMeters(const float pixels) {
-		return pixels * scaleInv;
+    // Inverts the y property of the given vector (mostly used when converting from Box2D coordinates to SFML coordinates)
+    inline sf::Vector2f invertHeight(sf::Vector2f vector) {
+        return { vector.x, -vector.y };
 	}
 
 	// Converts radians (used within Box2D) to degrees (used within SFML)
