@@ -20,6 +20,6 @@ void physics::update(const double& dt) {
 	world->Step(float32(dt), velocityIterations, positionIterations);
 }
 
-shared_ptr<b2World> getWorld() {
+shared_ptr<b2World> physics::getWorld() {
 	return world;
 }
