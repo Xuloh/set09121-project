@@ -30,9 +30,9 @@ namespace physics {
 	//
 	// Note : this function's name breaks the naming convention for readability purposes
 	// ReSharper disable once CppInconsistentNaming
-	inline sf::Vector2f b2Vec2_To_Vector2f(const b2Vec2& vector, bool scale = true) {
-        if(scale)
-		    return { vector.x * scale, vector.y * scale };
+	inline sf::Vector2f b2Vec2_To_Vector2f(const b2Vec2& vector, bool applyScale = true) {
+        if (applyScale)
+            return { vector.x * scale, vector.y * scale };
         return { vector.x, vector.y };
 	}
 
@@ -41,8 +41,8 @@ namespace physics {
 	//
 	// Note : this function's name breaks the naming convention for readability purposes
 	// ReSharper disable once CppInconsistentNaming
-	inline b2Vec2 Vector2f_To_b2Vec2(const sf::Vector2f vector, bool scale = true) {
-        if(scale)
+	inline b2Vec2 Vector2f_To_b2Vec2(const sf::Vector2f vector, bool applyScale = true) {
+        if(applyScale)
 		    return { vector.x * scaleInv, vector.y * scaleInv };
         return { vector.x, vector.y };
 	}
