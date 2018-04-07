@@ -3,6 +3,11 @@
 #include <iostream>
 #include "Scenes.h"
 #include "main.h"
+#include "ShapeComponent.h"
+#include "physics/PhysicsComponent.h"
+#include "PlayerPhysicsComponent.h"
+#include "SpriteComponent.h"
+#include "SpritesheetAnimatorComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -11,6 +16,7 @@ using namespace ecm;
 
 shared_ptr<Scene> activeScene;
 shared_ptr<Scene> mainMenu;
+shared_ptr<Scene> testLevel;
 
 // *** MainMenuScene class *** //
 
@@ -53,8 +59,48 @@ void MainMenuScene::render() {
 
 void MainMenuScene::playOnClick(const sf::Event& event) {
 	cout << "clicked the play button" << endl;
+    testLevel->load();
+    activeScene = testLevel;
 }
 
 void MainMenuScene::optionsOnClick(const sf::Event& event) {
 	cout << "clicked the options button" << endl;
 }
+
+// *** TestLevelScene class *** //
+
+void TestLevelScene::load() {
+    const auto groundSize = Vector2f(300.f, 50.f);
+    auto ground = make_shared<Entity>();
+    ground->setOrigin({ .5f, .5f });
+    ground->setPosition({ 500.f, -200.f });
+    auto groundShape = ground->addComponent<ShapeComponent>();
+    groundShape->setShape<RectangleShape>(groundSize);
+    auto groundPhysics = ground->addComponent<physics::PhysicsComponent>(false, groundSize);
+    groundPhysics->setRestitution(0.f);
+
+    auto circle = make_shared<Entity>();
+    /*auto circleShape = circle->addComponent<ShapeComponent>();
+    circleShape->setShape<CircleShape>(10.f);
+    circleShape->getShape().setFillColor(Color::Red);*/
+    circle->setOrigin({ .5f, .5f });
+    circle->setPosition({ 550.f, -300.f });
+    auto circlePhysics = circle->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 64.f));
+    auto circleSprite = circle->addComponent<SpriteComponent>();
+    circleSprite->setSprite();
+    auto circleAnimator = circle->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerRun.png");
+    circleAnimator->setSpriteSize({ 64, 64 });
+    circleAnimator->setAnimationTime(.2f);
+
+    entityManager.entities.push_back(ground);
+    entityManager.entities.push_back(circle);
+}
+
+void TestLevelScene::update(double dt) {
+    Scene::update(dt);
+}
+
+void TestLevelScene::render() {
+    Scene::render();
+}
+
