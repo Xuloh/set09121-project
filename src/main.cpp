@@ -35,6 +35,9 @@ void load() {
 	mainMenu.reset(new MainMenuScene());
 	mainMenu->load();
 
+    testLevel.reset(new TestLevelScene());
+    //testLevel->load();
+
 	activeScene = mainMenu;
 }
 
@@ -43,7 +46,6 @@ void update() {
 	const auto dt = clock.restart().asSeconds();
 
 	event::update();
-
 	physics::update(dt);
 
 	activeScene->update(dt);
@@ -68,7 +70,11 @@ int main() {
 		render();
 		window.display();
 	}
-	
+
+    mainMenu.reset();
+    testLevel.reset();
+    activeScene.reset();
+
 	physics::shutdown();
 	renderer::shutdown();
 
