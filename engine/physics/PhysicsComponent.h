@@ -27,7 +27,7 @@ namespace physics {
         bool isTouching(const PhysicsComponent& other, b2Contact const* contact) const;
         std::vector<const b2Contact*> getTouching() const;
 
-        const sf::Vector2f getVelocity() const;
+        sf::Vector2f getVelocity() const;
         void setVelocity(const sf::Vector2f& velocity) const;
 
         void setRestitution(float restitution) const;

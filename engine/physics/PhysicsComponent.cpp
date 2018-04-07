@@ -78,7 +78,7 @@ std::vector<const b2Contact*> PhysicsComponent::getTouching() const {
     return result;
 }
 
-const Vector2f PhysicsComponent::getVelocity() const {
+Vector2f PhysicsComponent::getVelocity() const {
     return b2Vec2_To_Vector2f(body->GetLinearVelocity());
 }
 
