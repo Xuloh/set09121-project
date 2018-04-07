@@ -3,6 +3,7 @@
 #include <engine.h>
 #include "Scenes.h"
 #include "main.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -22,6 +23,12 @@ void load() {
 	// register window handlers
 	event::registerHandler(Event::Closed, &closeWindow);
 	event::registerHandler(Event::KeyReleased, &closeWindowOnEscapePressed);
+
+    // setup controls
+    input::addControl("Left", Keyboard::Q, Keyboard::A);
+    input::addControl("Right", Keyboard::D, Keyboard::D);
+    input::addControl("Jump", Keyboard::Space, Keyboard::Space);
+    input::setAzertyActive();
 
 	font.loadFromFile("res/fonts/FiraCode-Medium.ttf");
 
