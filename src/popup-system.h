@@ -11,7 +11,7 @@ namespace popup {
     void shutdown();
 
     // display the given message in the popup, optionaly specifying the duration of the popup and its title
-    void popup(std::string message, float time = 2.f, std::string title = "");
+    void popup(const std::string& message, float time = 2.f, const std::string& title = "");
     
     // update the popup system
     void update(double dt);
