@@ -3,6 +3,7 @@
 #include <engine.h>
 #include "Scenes.h"
 #include "main.h"
+#include "popup-system.h"
 #include <iostream>
 
 using namespace std;
@@ -49,18 +50,22 @@ void update() {
 	physics::update(dt);
 
 	activeScene->update(dt);
+
+    popup::update(dt);
 }
 
 void render() {
 	activeScene->render();
+    popup::render();
 	renderer::render();
 }
 
 int main() {
 	RenderWindow window(VideoMode(800, 600), "MOIM");
 
-	renderer::initialise(window);
+    renderer::initialise(window);
 	physics::initialise();
+    popup::initialise();
 
 	load();
 
@@ -77,6 +82,7 @@ int main() {
 
 	physics::shutdown();
 	renderer::shutdown();
+    popup::shutdown();
 
 	return 0;
 }
