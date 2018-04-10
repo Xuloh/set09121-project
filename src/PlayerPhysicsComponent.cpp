@@ -44,7 +44,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
 void PlayerPhysicsComponent::update(double dt) {
     auto velocity = getVelocity();
-    cout << (grounded ? "grounded" : "not grounded") << endl;
+    //cout << (grounded ? "grounded" : "not grounded") << endl;
 
     // move left or right
     if (input::isControlPressed("Left")) {
