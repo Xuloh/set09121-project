@@ -22,7 +22,7 @@ void GravityFieldComponent::update(double dt) {
     auto i = 0;
     for(auto contactEdge = field->GetBody()->GetContactList(); contactEdge; contactEdge = contactEdge->next) {
         const auto contact = contactEdge->contact;
-        if (isContactWithThis(contact)) {
+        if (contact->IsTouching() && isContactWithThis(contact)) {
             const auto other = getOtherFixture(contact);            
             auto direction = field->GetBody()->GetPosition() - other->GetBody()->GetPosition();
             direction.Normalize();
