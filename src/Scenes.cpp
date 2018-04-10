@@ -8,6 +8,7 @@
 #include "PlayerPhysicsComponent.h"
 #include "SpriteComponent.h"
 #include "SpritesheetAnimatorComponent.h"
+#include "GravityFieldComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -79,21 +80,29 @@ void TestLevelScene::load() {
     auto groundPhysics = ground->addComponent<physics::PhysicsComponent>(false, groundSize);
     groundPhysics->setRestitution(0.f);
 
-    auto circle = make_shared<Entity>();
+    auto player = make_shared<Entity>();
     /*auto circleShape = circle->addComponent<ShapeComponent>();
     circleShape->setShape<CircleShape>(10.f);
     circleShape->getShape().setFillColor(Color::Red);*/
-    circle->setOrigin({ .5f, .5f });
-    circle->setPosition({ 550.f, -300.f });
-    auto circlePhysics = circle->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 64.f));
-    auto circleSprite = circle->addComponent<SpriteComponent>();
-    circleSprite->setSprite();
-    auto circleAnimator = circle->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerRun.png");
-    circleAnimator->setSpriteSize({ 64, 64 });
-    circleAnimator->setAnimationTime(.2f);
-
+    player->setOrigin({ .5f, .5f });
+    player->setPosition({ 550.f, -300.f });
+    auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 64.f));
+    auto playerSprite = player->addComponent<SpriteComponent>();
+    playerSprite->setSprite();
+    auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerRun.png");
+    playerAnimator->setSpriteSize({ 64, 64 });
+    playerAnimator->setAnimationTime(.2f);
+    auto playerField = player->addComponent<GravityFieldComponent>(20.f);
+    playerField->setForce(19.62f);
+    auto box = make_shared<Entity>();
+    box->setOrigin({ .5f, .5f });
+    box->setPosition({ 400.f, -500.01f });
+    auto boxPhysics = box->addComponent<physics::PhysicsComponent>(true, Vector2f(32.f, 32.f));
+    auto boxShape = box->addComponent<ShapeComponent>();
+    boxShape->setShape<RectangleShape>(Vector2f(32.f, 32.f));
     entityManager.entities.push_back(ground);
-    entityManager.entities.push_back(circle);
+    entityManager.entities.push_back(player);
+    entityManager.entities.push_back(box);
 }
 
 void TestLevelScene::update(double dt) {
