@@ -5,6 +5,8 @@
 using namespace std;
 using namespace sf;
 
+using tilemap::TileMap;
+
 void TileMap::load(const string& filePath) {
     size_t width = 0;
     size_t height = 0;
