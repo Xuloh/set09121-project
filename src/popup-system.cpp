@@ -1,9 +1,9 @@
 #include "popup-system.h"
-#include "main.h"
 #include <SFML/Graphics.hpp>
 #include <ecm/ecm.h>
 #include <gui/gui.h>
 #include <memory>
+#include <resources/resources-manager.h>
 
 using namespace std;
 using namespace sf;
@@ -18,7 +18,8 @@ static float timer = 0.f;
 static bool activePopup = false;
 
 void popup::initialise() {
-    auto guiFactory = GUIFactory({ Color::White, Color::Cyan, &font, 24.f });
+    const auto font = resources::get<Font>("FiraCode-Medium.ttf");
+    auto guiFactory = GUIFactory({ Color::White, Color::Cyan, font.get(), 24.f });
 
     popupText = guiFactory.makeLabel("Popup text");
     popupTitle = guiFactory.makeLabel("Popup title");
