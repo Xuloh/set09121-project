@@ -1,7 +1,7 @@
 #include <physics/physics-system.h>
 #include <physics/PhysicsComponent.h>
 #include "GravityFieldComponent.h"
-#include <iostream>
+
 using namespace std;
 using namespace ecm;
 using namespace physics;
@@ -25,6 +25,8 @@ void GravityFieldComponent::update(double dt) {
         if (contact->IsTouching() && isContactWithThis(contact)) {
             const auto other = getOtherFixture(contact);            
             auto direction = field->GetBody()->GetPosition() - other->GetBody()->GetPosition();
+            // newton's equation of gravitational force without the gravitational constant
+            const auto force = this->force * other->GetBody()->GetMass() / direction.LengthSquared();
             direction.Normalize();
             direction *= force;
             other->GetBody()->ApplyForceToCenter(direction, true);
