@@ -8,7 +8,7 @@ using namespace physics;
 
 GravityFieldComponent::GravityFieldComponent(Entity* parent, const float fieldRadius) : Component(parent) {
     const auto physics = this->parent->getComponent<PhysicsComponent>();
-    
+    force = .0f;
     b2CircleShape shape;
     shape.m_p = Vector2f_To_b2Vec2(invertHeight(this->parent->getPosition()));
     shape.m_radius = fieldRadius;
