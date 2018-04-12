@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <iostream>
+#include <resources/resources-manager.h>
 #include "Scenes.h"
 #include "main.h"
 #include "ShapeComponent.h"
@@ -22,7 +23,8 @@ shared_ptr<Scene> testLevel;
 // *** MainMenuScene class *** //
 
 void MainMenuScene::load() {
-	auto guiFactory = GUIFactory({ Color::White, Color::Cyan, &font, 32.f });
+    const auto font = resources::get<Font>("FiraCode-Medium.ttf");
+	auto guiFactory = GUIFactory({ Color::White, Color::Cyan, font.get(), 32.f });
 
 	auto title = guiFactory.makeLabel("MOIM : Massive Objects Influence Motion");
 	title->setOrigin({ 0.5f, 0.5f });
