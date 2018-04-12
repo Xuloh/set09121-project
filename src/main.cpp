@@ -1,15 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <engine.h>
+#include <iostream>
 #include "Scenes.h"
 #include "main.h"
 #include "popup-system.h"
-#include <iostream>
 
 using namespace std;
 using namespace sf;
-
-Font font;
 
 void closeWindow(const Event& event) {
 	renderer::getWindow().close();
@@ -30,8 +27,6 @@ void load() {
     input::addControl("Right", Keyboard::D, Keyboard::D);
     input::addControl("Jump", Keyboard::Space, Keyboard::Space);
     input::setAzertyActive();
-
-	font.loadFromFile("res/fonts/FiraCode-Medium.ttf");
 
 	mainMenu.reset(new MainMenuScene());
 	mainMenu->load();
