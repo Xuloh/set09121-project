@@ -10,7 +10,7 @@ namespace tilemap {
 
     // A subclass of sf::Drawable and sf::Transformable that represents a tile map
     // it can load a map from a text file and render it to a sf::RenderTarget
-    class TileMap : public sf::Drawable, public sf::Transformable {
+    class Tilemap : public sf::Drawable, public sf::Transformable {
     public:
         // the different kinds of tiles
         enum Tile {

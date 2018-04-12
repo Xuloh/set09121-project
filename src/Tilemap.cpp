@@ -5,9 +5,9 @@
 using namespace std;
 using namespace sf;
 
-using tilemap::TileMap;
+using tilemap::Tilemap;
 
-void TileMap::load(const string& filePath) {
+void Tilemap::load(const string& filePath) {
     size_t width = 0;
     size_t height = 0;
 
@@ -65,37 +65,37 @@ void TileMap::load(const string& filePath) {
     buildVertices();
 }
 
-void TileMap::setTexture(const shared_ptr<Texture> texture) {
+void Tilemap::setTexture(const shared_ptr<Texture> texture) {
     this->texture = texture;
 }
 
-void TileMap::setTileSize(const Vector2u& tileSize) {
+void Tilemap::setTileSize(const Vector2u& tileSize) {
     this->tileSize = tileSize;
 }
 
-void TileMap::setSpriteSize(const Vector2u& spriteSize) {
+void Tilemap::setSpriteSize(const Vector2u& spriteSize) {
     this->spriteSize = spriteSize;
 }
 
-void TileMap::setTileSpriteIndexMap(const std::unordered_map<Tile, unsigned>& map) {
+void Tilemap::setTileSpriteIndexMap(const std::unordered_map<Tile, unsigned>& map) {
     tileSpriteIndexMap = map;
 }
 
-void TileMap::setTileSpriteIndex(const Tile tile, const unsigned index) {
+void Tilemap::setTileSpriteIndex(const Tile tile, const unsigned index) {
     tileSpriteIndexMap[tile] = index;
 }
 
-void TileMap::setDefaultSpriteIndex(const unsigned defaultIndex) {
+void Tilemap::setDefaultSpriteIndex(const unsigned defaultIndex) {
     defaultSpriteIndex = defaultIndex;
 }
 
-TileMap::Tile TileMap::getTile(const Vector2u position) const {
+Tilemap::Tile Tilemap::getTile(const Vector2u position) const {
     if (position.x > width || position.y > height)
         throw string("Tile out of range : " + to_string(position.x) + ", " + to_string(position.y));
     return tiles[position.y * width + position.x];
 }
 
-void TileMap::draw(RenderTarget& target, RenderStates states) const {
+void Tilemap::draw(RenderTarget& target, RenderStates states) const {
     states.transform *= getTransform();
     states.texture = texture.get();
     target.draw(vertices, states);
@@ -105,7 +105,7 @@ template<typename T> ostream& operator<<(ostream& out, Vector2<T>& vector) {
     return out << "[" << vector.x << "," << vector.y << "]";
 }
 
-void TileMap::buildVertices() {
+void Tilemap::buildVertices() {
     // initialise the vertex array
     vertices.clear();
     vertices.setPrimitiveType(Quads);
