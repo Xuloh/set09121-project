@@ -10,6 +10,8 @@ using namespace ecm;
 PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* parent, const Vector2f& size) : PhysicsComponent(parent, true, size) {
     this->size = Vector2f_To_b2Vec2(size);
     maxVelocity = { 200.f, 400.f };
+    downwards = { 0.f, -1.f };
+    leftwards = { -1.f, 0.f };
     groundSpeed = 30.f;
     grounded = false;
     jump = false;
@@ -35,12 +37,23 @@ bool PlayerPhysicsComponent::isGrounded() const {
         auto contactIsBelow = numPoints > 0;
         // determine if all the points are below the player
         for (auto i = 0; i < numPoints; i++)
-            contactIsBelow &= manifold.points[i].y < positionY - halfHeight;
+            contactIsBelow &= isBelow(manifold.points[i]);
         if (contactIsBelow)
             return true;
     }
     return false;
 }
+
+bool PlayerPhysicsComponent::isBelow(const b2Vec2 point) const {
+    const auto& position = body->GetPosition();
+    return
+        (downwards.x == 0 && // vertical gravity
+        downwards.y * point.y > downwards.y * (position.y + downwards.y * size.y * .5f))
+        ||
+        (downwards.y == 0 && // horizontal gravity
+        downwards.x * point.x > downwards.x * (position.x + downwards.y * size.x * .5f));
+}
+
 
 void PlayerPhysicsComponent::update(double dt) {
     auto velocity = getVelocity();
@@ -49,14 +62,17 @@ void PlayerPhysicsComponent::update(double dt) {
     // move left or right
     if (input::isControlPressed("Left")) {
         if (velocity.x > -maxVelocity.x)
-            impulse({ float(dt) * -groundSpeed, 0.f });
+            impulse(float(dt) * groundSpeed * leftwards);
     }
     else if (input::isControlPressed("Right")) {
         if (velocity.x < maxVelocity.x)
-            impulse({ float(dt) * groundSpeed, 0.f });
+            impulse(float(dt) * -groundSpeed * leftwards);
     }
     else {
-        dampen({ .9f, 1.f });
+        if(downwards.x == 0)
+            dampen({ .9f, 1.f });
+        if (downwards.y == 0)
+            dampen({ 1.f, .9f });
     }
 
     // jump
@@ -64,8 +80,9 @@ void PlayerPhysicsComponent::update(double dt) {
         jump = false;
         grounded = isGrounded();
         if(grounded) {
-            setVelocity({ velocity.x, 0.f });
-            impulse({ 0.f, -6.f });
+            // keep velocity depending on the downwards direction
+            setVelocity({ !downwards.x * velocity.x, !downwards.y * velocity.y });
+            impulse(6.f * downwards);
         }
     }
     
@@ -105,4 +122,20 @@ const Vector2f& PlayerPhysicsComponent::getMaxVelocity() const {
 
 void PlayerPhysicsComponent::setMaxVelocity(const Vector2f maxVelocity) {
     this->maxVelocity = maxVelocity;
+}
+
+const Vector2f& PlayerPhysicsComponent::getDownwards() const {
+    return downwards;
+}
+
+void PlayerPhysicsComponent::setDownwards(const Vector2f downwards) {
+    this->downwards = downwards;
+}
+
+const Vector2f& PlayerPhysicsComponent::getLeftwards() const {
+    return leftwards;
+}
+
+void PlayerPhysicsComponent::setLeftwards(const Vector2f leftwards) {
+    this->leftwards = leftwards;
 }

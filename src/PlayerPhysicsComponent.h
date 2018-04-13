@@ -12,8 +12,11 @@ protected:
     bool grounded;
     float groundSpeed;
     bool jump;
+    sf::Vector2f downwards;
+    sf::Vector2f leftwards;
 
     bool isGrounded() const;
+    bool isBelow(b2Vec2 point) const;
 public:
     PlayerPhysicsComponent() = delete;
     explicit PlayerPhysicsComponent(ecm::Entity* parent, const sf::Vector2f& size);
@@ -27,4 +30,10 @@ public:
 
     const sf::Vector2f& getMaxVelocity() const;
     void setMaxVelocity(sf::Vector2f maxVelocity);
+
+    const sf::Vector2f& getDownwards() const;
+    void setDownwards(sf::Vector2f downwards);
+
+    const sf::Vector2f& getLeftwards() const;
+    void setLeftwards(sf::Vector2f leftwards);
 };
