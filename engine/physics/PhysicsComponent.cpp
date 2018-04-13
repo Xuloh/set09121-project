@@ -110,3 +110,7 @@ void PhysicsComponent::dampen(const Vector2f& factor) const {
 void PhysicsComponent::teleport(const Vector2f& position) const {
     body->SetTransform(Vector2f_To_b2Vec2(invertHeight(position)), body->GetAngle());
 }
+
+void PhysicsComponent::rotate(float angle) const {
+    body->SetTransform(body->GetPosition(), degreesToRadians(angle) + body->GetAngle());
+}

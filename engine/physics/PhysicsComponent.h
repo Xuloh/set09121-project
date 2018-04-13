@@ -36,5 +36,6 @@ namespace physics {
         void impulse(const sf::Vector2f& impulse) const;
         void dampen(const sf::Vector2f& factor) const;
         void teleport(const sf::Vector2f& position) const;
+        void rotate(float angle) const;
     };
 }
