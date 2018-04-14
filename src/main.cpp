@@ -26,6 +26,8 @@ void load() {
     input::addControl("Left", Keyboard::Q, Keyboard::A);
     input::addControl("Right", Keyboard::D, Keyboard::D);
     input::addControl("Jump", Keyboard::Space, Keyboard::Space);
+    input::addControl("GravityLeft", Keyboard::A, Keyboard::Q);
+    input::addControl("GravityRight", Keyboard::E, Keyboard::E);
     input::setAzertyActive();
 
 	mainMenu.reset(new MainMenuScene());
