@@ -3,6 +3,7 @@
 // helper header to include every engine headers at once
 
 #include "ecm/ecm.h"
+#include "ecm/scene-manager.h"
 #include "event/event-system.h"
 #include "gui/gui.h"
 #include "input/input-system.h"
