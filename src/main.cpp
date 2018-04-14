@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <engine.h>
-#include <iostream>
 #include "Scenes.h"
 #include "main.h"
 #include "popup-system.h"
@@ -30,13 +29,10 @@ void load() {
     input::addControl("GravityRight", Keyboard::E, Keyboard::E);
     input::setAzertyActive();
 
-	mainMenu.reset(new MainMenuScene());
-	mainMenu->load();
-
-    testLevel.reset(new TestLevelScene());
-    //testLevel->load();
-
-	activeScene = mainMenu;
+    // setup scenes
+    scene::add("main-menu", make_shared<MainMenuScene>());
+    scene::add("test-level", make_shared<TestLevelScene>());
+    scene::load("main-menu");
 }
 
 void update() {
@@ -45,14 +41,12 @@ void update() {
 
 	event::update();
 	physics::update(dt);
-
-	activeScene->update(dt);
-
+    scene::update(dt);
     popup::update(dt);
 }
 
 void render() {
-	activeScene->render();
+    scene::render();
     popup::render();
 	renderer::render();
 }
@@ -73,10 +67,7 @@ int main() {
 		window.display();
 	}
 
-    mainMenu.reset();
-    testLevel.reset();
-    activeScene.reset();
-
+    scene::shutdown();
 	physics::shutdown();
 	renderer::shutdown();
     popup::shutdown();
