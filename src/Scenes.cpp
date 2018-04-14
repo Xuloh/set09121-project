@@ -10,6 +10,7 @@
 #include "SpriteComponent.h"
 #include "SpritesheetAnimatorComponent.h"
 #include "GravityFieldComponent.h"
+#include "RotateGravityComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -82,10 +83,35 @@ void TestLevelScene::load() {
     auto groundPhysics = ground->addComponent<physics::PhysicsComponent>(false, groundSize);
     groundPhysics->setRestitution(0.f);
 
+    auto ceil = make_shared<Entity>();
+    ceil->setOrigin({ .5f, .5f });
+    ceil->setPosition({ 500.f, -500.f });
+    auto ceilShape = ceil->addComponent<ShapeComponent>();
+    ceilShape->setShape<RectangleShape>(groundSize);
+    ceilShape->getShape().setFillColor(Color::Magenta);
+    auto ceilPhysics = ceil->addComponent<physics::PhysicsComponent>(false, groundSize);
+    ceilPhysics->setRestitution(0.f);
+
+    const auto wallSize = Vector2f(50.f, 300.f);
+    auto wallL = make_shared<Entity>();
+    wallL->setOrigin({ .5f, .5f });
+    wallL->setPosition({ 350.f, -350.f });
+    auto wallLShape = wallL->addComponent<ShapeComponent>();
+    wallLShape->setShape<RectangleShape>(wallSize);
+    wallLShape->getShape().setFillColor(Color::Cyan);
+    auto wallLPhysics = wallL->addComponent<physics::PhysicsComponent>(false, wallSize);
+    wallLPhysics->setRestitution(0.f);
+
+    auto wallR = make_shared<Entity>();
+    wallR->setOrigin({ .5f, .5f });
+    wallR->setPosition({ 650.f, -350.f });
+    auto wallRShape = wallR->addComponent<ShapeComponent>();
+    wallRShape->setShape<RectangleShape>(wallSize);
+    wallRShape->getShape().setFillColor(Color::Yellow);
+    auto wallRPhysics = wallR->addComponent<physics::PhysicsComponent>(false, wallSize);
+    wallRPhysics->setRestitution(0.f);
+
     auto player = make_shared<Entity>();
-    /*auto circleShape = circle->addComponent<ShapeComponent>();
-    circleShape->setShape<CircleShape>(10.f);
-    circleShape->getShape().setFillColor(Color::Red);*/
     player->setOrigin({ .5f, .5f });
     player->setPosition({ 550.f, -300.f });
     auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 64.f));
@@ -95,14 +121,20 @@ void TestLevelScene::load() {
     playerAnimator->setSpriteSize({ 64, 64 });
     playerAnimator->setAnimationTime(.2f);
     auto playerField = player->addComponent<GravityFieldComponent>(20.f);
-    playerField->setForce(19.62f);
+    playerField->setForce(20.f);
+    auto gravityRotate = player->addComponent<RotateGravityComponent>();
+
     auto box = make_shared<Entity>();
     box->setOrigin({ .5f, .5f });
-    box->setPosition({ 400.f, -500.01f });
+    box->setPosition({ 400.f, -300.f });
     auto boxPhysics = box->addComponent<physics::PhysicsComponent>(true, Vector2f(32.f, 32.f));
     auto boxShape = box->addComponent<ShapeComponent>();
     boxShape->setShape<RectangleShape>(Vector2f(32.f, 32.f));
+
     entityManager.entities.push_back(ground);
+    entityManager.entities.push_back(wallL);
+    entityManager.entities.push_back(wallR);
+    entityManager.entities.push_back(ceil);
     entityManager.entities.push_back(player);
     entityManager.entities.push_back(box);
 }
