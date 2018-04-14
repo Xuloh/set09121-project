@@ -117,6 +117,7 @@ public:
 	virtual ~Scene();
 
 	virtual void load() = 0;
+    virtual void unload();
 	virtual void update(double dt);
 	virtual void render();
 

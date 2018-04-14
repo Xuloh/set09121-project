@@ -110,6 +110,10 @@ void EntityManager::render() const {
 Scene::Scene() = default;
 Scene::~Scene() = default;
 
+void Scene::unload() {
+    entityManager.entities.clear();
+}
+
 void Scene::update(const double dt) {
 	entityManager.update(dt);
 }
