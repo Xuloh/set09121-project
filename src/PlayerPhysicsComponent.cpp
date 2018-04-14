@@ -82,7 +82,7 @@ void PlayerPhysicsComponent::update(double dt) {
         if(grounded) {
             // keep velocity depending on the downwards direction
             setVelocity({ !downwards.x * velocity.x, !downwards.y * velocity.y });
-            impulse(6.f * downwards);
+            impulse(-6.f * downwards);
         }
     }
     
