@@ -99,7 +99,7 @@ void PhysicsComponent::setMass(const float mass) const {
 }
 
 void PhysicsComponent::impulse(const Vector2f& impulse) const {
-    body->ApplyLinearImpulseToCenter({ impulse.x, -impulse.y }, true);
+    body->ApplyLinearImpulseToCenter({ impulse.x, impulse.y }, true);
 }
 
 void PhysicsComponent::dampen(const Vector2f& factor) const {
