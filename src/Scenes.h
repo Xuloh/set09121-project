@@ -1,11 +1,6 @@
 #pragma once
 
 #include <engine.h>
-#include <memory>
-
-extern std::shared_ptr<ecm::Scene> activeScene;
-extern std::shared_ptr<ecm::Scene> mainMenu;
-extern std::shared_ptr<ecm::Scene> testLevel;
 
 class MainMenuScene : public ecm::Scene {
 public:

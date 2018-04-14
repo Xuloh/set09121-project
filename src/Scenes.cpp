@@ -2,6 +2,7 @@
 #include <memory>
 #include <iostream>
 #include <resources/resources-manager.h>
+#include <ecm/scene-manager.h>
 #include "Scenes.h"
 #include "main.h"
 #include "ShapeComponent.h"
@@ -16,10 +17,6 @@ using namespace std;
 using namespace sf;
 using namespace gui;
 using namespace ecm;
-
-shared_ptr<Scene> activeScene;
-shared_ptr<Scene> mainMenu;
-shared_ptr<Scene> testLevel;
 
 // *** MainMenuScene class *** //
 
@@ -63,8 +60,7 @@ void MainMenuScene::render() {
 
 void MainMenuScene::playOnClick(const sf::Event& event) {
 	cout << "clicked the play button" << endl;
-    testLevel->load();
-    activeScene = testLevel;
+    scene::load("test-level");
 }
 
 void MainMenuScene::optionsOnClick(const sf::Event& event) {
