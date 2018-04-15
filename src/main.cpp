@@ -36,8 +36,6 @@ void load() {
     input::bindJoystickButton("GravityLeft", 1);
     input::bindJoystickButton("GravityRight", 2);
 
-    input::setUseController(true);
-
     // setup scenes
     scene::add("main-menu", make_shared<MainMenuScene>());
     scene::add("test-level", make_shared<TestLevelScene>());
