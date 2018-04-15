@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <memory>
 #include "renderer/renderer-system.h"
 
@@ -8,7 +9,9 @@ namespace event {
 	class EventHandler;
 
 	// defines a pointer to a function that takes a sf::Event parameter and returns void
-	typedef void(*eventFunction)(const sf::Event&);
+	//typedef void(*eventFunction)(const sf::Event&);
+    typedef std::shared_ptr<std::function<void(const sf::Event&)>> eventFunction;
+    typedef std::function<void(const sf::Event&)> eventFunctionType;
 
 	// register the given EventHandler whose handleEvent method will be called each time an Event of the given type is processed
 	// if this the handler is only registered for a single event type, it will only be called for that type
