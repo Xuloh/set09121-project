@@ -63,6 +63,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
     // move left or right
     if (input::isControlPressed("Left")) {
+
         if (velocity.x > -maxVelocity.x)
             impulse(float(dt) * groundSpeed * leftwards);
     }

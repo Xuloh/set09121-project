@@ -37,9 +37,7 @@ void SpritesheetAnimatorComponent::update(const double dt) {
     timer -= float(dt);
     if (timer <= 0.f) {
         sprite.setTextureRect(textureRects[currentTextureRect]);
-		while (currentTextureRect < endFrame) {
-			currentTextureRect = (currentTextureRect + 1) % textureRects.size();
-		}
+		currentTextureRect = (currentTextureRect + 1) % (endFrame - keyFrame) + keyFrame;
         timer = animationTime;
     }
 }
@@ -48,25 +46,25 @@ void SpritesheetAnimatorComponent::render() {}
 
 
 //keyframe getter 
-float SpritesheetAnimatorComponent::getKeyFrame() const
+unsigned SpritesheetAnimatorComponent::getKeyFrame() const
 {
 	return keyFrame;
 }
 
 //keyframe setter
-void SpritesheetAnimatorComponent::setKeyFrame(float keyFrame)
+void SpritesheetAnimatorComponent::setKeyFrame(unsigned keyFrame)
 {
 	this->keyFrame = keyFrame;
 }
 
 //endframe getter 
-float SpritesheetAnimatorComponent::getEndFrame() const
+unsigned SpritesheetAnimatorComponent::getEndFrame() const
 {
 	return endFrame;
 }
 
 //endframe setter
-void SpritesheetAnimatorComponent::setEndFrame(float endFrame)
+void SpritesheetAnimatorComponent::setEndFrame(unsigned endFrame)
 {
 	this->endFrame = endFrame;
 }
