@@ -91,14 +91,16 @@ MouseHoverComponent::~MouseHoverComponent() {
 }
 
 void MouseHoverComponent::handleEvent(const sf::Event& event) {
-	if (!isMouseInArea && targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
-		isMouseInArea = true;
-		targetText.setFillColor(hoverColor);
-	}
-	else if (isMouseInArea && !targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
-		isMouseInArea = false;
-		targetText.setFillColor(baseColor);
-	}
+    if (parent->isAlive()) {
+        if (!isMouseInArea && targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+            isMouseInArea = true;
+            targetText.setFillColor(hoverColor);
+        }
+        else if (isMouseInArea && !targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+            isMouseInArea = false;
+            targetText.setFillColor(baseColor);
+        }
+    }
 }
 
 void MouseHoverComponent::update(double dt) {}
