@@ -92,10 +92,12 @@ void Component::setForDeletion() {
 void EntityManager::update(const double dt) {
 	auto it = entities.begin();
 	while (it != entities.end()) {
-		if ((*it)->isForDeletion())
-			it = entities.erase(it);
-		else if((*it)->isAlive())
-			(*it++)->update(dt);
+		if (!(*it)->isForDeletion()) {
+		    if((*it)->isAlive())
+		        (*it)->update(dt);
+		    ++it;
+		}
+		else it = entities.erase(it);
 	}
 }
 
