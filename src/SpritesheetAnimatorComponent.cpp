@@ -16,7 +16,7 @@ SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const
 
     sprite.setTexture(*texture);
     spriteSize = texture->getSize();
-    currentTextureRect = 0;
+    currentTextureRect = keyFrame;
     textureRects.emplace_back(0, 0, spriteSize.x, spriteSize.y);
 
     this->animationTime = animationTime;
@@ -26,8 +26,8 @@ SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const
 void SpritesheetAnimatorComponent::updateTextureRects() {
     textureRects.clear();
     const auto& textureSize = texture->getSize();
-    for (unsigned i = 0; i <= textureSize.x - spriteSize.x; i += spriteSize.x) {
-        for (unsigned j = 0; j <= textureSize.y - spriteSize.y; j += spriteSize.y) {
+	for (unsigned j = 0; j <= textureSize.y - spriteSize.y; j += spriteSize.y) {
+		for (unsigned i = 0; i <= textureSize.x - spriteSize.x; i += spriteSize.x) {
             textureRects.emplace_back(i, j, spriteSize.x, spriteSize.y);
         }
     }
@@ -43,6 +43,20 @@ void SpritesheetAnimatorComponent::update(const double dt) {
 }
 
 void SpritesheetAnimatorComponent::render() {}
+
+
+//keyframe getter 
+float SpritesheetAnimatorComponent::getKeyFrame() const
+{
+	return keyFrame;
+}
+
+//keyframe setter
+void SpritesheetAnimatorComponent::setKeyFrame(float keyFrame)
+{
+	this->keyFrame = keyFrame;
+}
+
 
 float SpritesheetAnimatorComponent::getAnimationTime() const {
     return animationTime;
@@ -60,3 +74,4 @@ void SpritesheetAnimatorComponent::setSpriteSize(const Vector2u spriteSize) {
     this->spriteSize = spriteSize;
     updateTextureRects();
 }
+
