@@ -7,6 +7,7 @@ class MainMenuScene : public ecm::Scene {
 protected:
     std::shared_ptr<ecm::Entity> mainMenuLayout;
     std::shared_ptr<ecm::Entity> optionsMenuLayout;
+    int currentVideoMode = 0;
 public:
 	MainMenuScene() = default;
 

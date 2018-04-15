@@ -74,23 +74,48 @@ void MainMenuScene::load() {
 
     auto fullscreenButton = guiFactory.makeButton("Fullscreen", make_shared<eventFunctionType>(
         [this](const Event& event) {
-            cout << "clicked fullscreen" << endl;
-            static auto fullscreen = false;
-            auto& window = renderer::getWindow();
-
-            if (!fullscreen) {
-                auto fullscreenModes = VideoMode::getFullscreenModes();
-                window.create(fullscreenModes[0], "MOIM", Style::Fullscreen);
-            }
-            else
-                window.create(VideoMode::getDesktopMode(), "MOIM");
-            fullscreen = !fullscreen;
-            renderer::initialise(window);
+            renderer::setFullscreen(!renderer::isFullscreen());
             mainMenuLayout->getComponent<LayoutComponent>()->updateSize();
             optionsMenuLayout->getComponent<LayoutComponent>()->updateSize();
         }
     ));
     fullscreenButton->setOrigin({ .5f, .5f });
+
+    auto resolution = guiFactory.makeLabel("Resolution");
+    resolution->setOrigin({ .5f, .5f });
+
+    auto selectResolution = guiFactory.makeButton("800x600", make_shared<eventFunctionType>(
+        [this](const Event& event) {
+            auto& window = renderer::getWindow();
+            auto& currentMode = VideoMode::getFullscreenModes()[currentVideoMode];
+            renderer::setResolution(currentMode);
+            mainMenuLayout->getComponent<LayoutComponent>()->updateSize();
+            optionsMenuLayout->getComponent<LayoutComponent>()->updateSize();
+        }
+    ));
+    selectResolution->setOrigin({ .5f, .5f });
+
+    auto previousResolution = guiFactory.makeButton("<", make_shared<eventFunctionType>(
+        [this, selectResolution](const Event& event) {
+            const auto& videoModes = VideoMode::getFullscreenModes();
+            auto& text = selectResolution->getComponent<TextComponent>()->getText();
+            currentVideoMode = currentVideoMode != 0 ? currentVideoMode - 1 : videoModes.size() - 1;
+            auto currentMode = videoModes[currentVideoMode];
+            text.setString(to_string(currentMode.width) + "x" + to_string(currentMode.height));
+        }
+    ));
+    previousResolution->setOrigin({ 1.f, .5f });
+
+    auto nextResolution = guiFactory.makeButton(">", make_shared<eventFunctionType>(
+        [this, selectResolution](const Event& event) {
+            const auto& videoModes = VideoMode::getFullscreenModes();
+            auto& text = selectResolution->getComponent<TextComponent>()->getText();
+            currentVideoMode = (currentVideoMode + 1) % videoModes.size();
+            auto currentMode = videoModes[currentVideoMode];
+            text.setString(to_string(currentMode.width) + "x" + to_string(currentMode.height));
+        }
+    ));
+    nextResolution->setOrigin({ 0.f, .5f });
 
     auto optionsBackButton = guiFactory.makeButton("Back", make_shared<eventFunctionType>(
         [this](const Event& event) {
@@ -116,8 +141,11 @@ void MainMenuScene::load() {
     optionsMenuLayout->setAlive(false);
     optionsMenuLayout->setVisible(false);
     auto optionsLayout = optionsMenuLayout->addComponent<LayoutComponent>(1.f, 1.f);
-    optionsLayout->addItem(options, 0.5f, 0.2f);
-    optionsLayout->addItem(fullscreenButton, 0.5f, 0.4f);
+    optionsLayout->addItem(options, .5f, .2f);
+    optionsLayout->addItem(fullscreenButton, .5f, .4f);
+    optionsLayout->addItem(previousResolution, .3f, .6f);
+    optionsLayout->addItem(selectResolution, .5f, .6f);
+    optionsLayout->addItem(nextResolution, .7f, .6f);
     optionsLayout->addItem(optionsBackButton, .9f, .9f);
     optionsLayout->setItemsAlive(false);
     optionsLayout->setItemsVisible(false);
@@ -130,6 +158,9 @@ void MainMenuScene::load() {
     entityManager.entities.push_back(optionsMenuLayout);
     entityManager.entities.push_back(options);
     entityManager.entities.push_back(fullscreenButton);
+    entityManager.entities.push_back(previousResolution);
+    entityManager.entities.push_back(selectResolution);
+    entityManager.entities.push_back(nextResolution);
     entityManager.entities.push_back(optionsBackButton);
 }
 
