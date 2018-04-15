@@ -28,10 +28,12 @@ RotateGravityComponent::RotateGravityComponent(ecm::Entity* parent) : Component(
     rotateLeft = false;
     rotateRight = false;
     registerHandler(Event::KeyPressed, this);
+    registerHandler(Event::JoystickButtonReleased, this);
 }
 
 RotateGravityComponent::~RotateGravityComponent() {
     unregisterHandler(Event::KeyPressed, this);
+    unregisterHandler(Event::JoystickButtonReleased, this);
 }
 
 void RotateGravityComponent::update(double dt) {
@@ -71,8 +73,18 @@ void RotateGravityComponent::update(double dt) {
 void RotateGravityComponent::render() {}
 
 void RotateGravityComponent::handleEvent(const sf::Event& event) {
-    if (!rotateLeft && event.key.code == input::getKey("GravityLeft"))
-        rotateLeft = true;
-    else if (!rotateRight && event.key.code == input::getKey("GravityRight"))
-        rotateRight = true;
+    if (!input::usingController() && event.type == Event::KeyReleased) {
+        if (!rotateLeft && event.key.code == input::getKey("GravityLeft"))
+            rotateLeft = true;
+        else if (!rotateRight && event.key.code == input::getKey("GravityRight"))
+            rotateRight = true;
+    }
+    else if(input::usingController() && event.type == Event::JoystickButtonReleased) {
+        if (event.joystickButton.joystickId == 0) {
+            if (!rotateLeft && event.joystickButton.button == input::getJoystickButton("GravityLeft"))
+                rotateLeft = true;
+            else if (!rotateRight && event.joystickButton.button == input::getJoystickButton("GravityRight"))
+                rotateRight = true;
+        }
+    }
 }
