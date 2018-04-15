@@ -5,7 +5,7 @@
 using namespace std;
 using namespace sf;
 
-using tilemap::Tilemap;
+using namespace tilemap;
 
 void Tilemap::load(const string& filePath) {
     size_t width = 0;
@@ -89,10 +89,18 @@ void Tilemap::setDefaultSpriteIndex(const unsigned defaultIndex) {
     defaultSpriteIndex = defaultIndex;
 }
 
-Tilemap::Tile Tilemap::getTile(const Vector2u position) const {
+Tile Tilemap::getTile(const Vector2u position) const {
     if (position.x > width || position.y > height)
         throw string("Tile out of range : " + to_string(position.x) + ", " + to_string(position.y));
     return tiles[position.y * width + position.x];
+}
+
+size_t Tilemap::getWidth() const {
+    return width;
+}
+
+size_t Tilemap::getHeight() const {
+    return height;
 }
 
 void Tilemap::draw(RenderTarget& target, RenderStates states) const {

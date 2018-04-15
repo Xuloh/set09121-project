@@ -44,6 +44,10 @@ namespace tilemap {
 
         // get the tile at the given position in the map
         Tile getTile(sf::Vector2u position) const;
+
+        size_t getWidth() const;
+        size_t getHeight() const;
+
     private:
         sf::VertexArray vertices;
         std::shared_ptr<sf::Texture> texture;
