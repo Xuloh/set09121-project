@@ -24,7 +24,8 @@ using namespace event;
 
 void MainMenuScene::load() {
     const auto font = resources::get<Font>("FiraCode-Medium.ttf");
-	auto guiFactory = GUIFactory({ Color::White, Color::Cyan, font.get(), 32.f });
+    const GUISettings settings = { Color::White, Color::Cyan, font.get(), 32.f };
+	auto guiFactory = GUIFactory(settings);
 
     // main menu
 	auto title = guiFactory.makeLabel("MOIM : Massive Objects Influence Motion");
@@ -117,6 +118,28 @@ void MainMenuScene::load() {
     ));
     nextResolution->setOrigin({ 0.f, .5f });
 
+    auto useControllerButton = make_shared<Entity>();
+    useControllerButton->setOrigin({ .5f, .5f });
+    auto controllerButtonText = useControllerButton->addComponent<TextComponent>();
+    controllerButtonText->setText();
+    controllerButtonText->getText().setFont(*settings.font);
+    controllerButtonText->getText().setCharacterSize(settings.characterSize);
+    controllerButtonText->getText().setFillColor(settings.baseColor);
+    controllerButtonText->getText().setString("Controller disabled");
+    auto controllerButtonHover = useControllerButton->addComponent<MouseHoverComponent>();
+    controllerButtonHover->baseColor = settings.baseColor;
+    controllerButtonHover->hoverColor = settings.hoverColor;
+    auto controllerButtonClick = useControllerButton->addComponent<ClickComponent>();
+    controllerButtonClick->onClick = make_shared<eventFunctionType>(
+        [controllerButtonText](const Event& event) {
+            input::setUseController(!input::usingController());
+            if (input::usingController())
+                controllerButtonText->getText().setString("Controller enabled");
+            else
+                controllerButtonText->getText().setString("Controller disabled");
+        }
+    );
+
     auto optionsBackButton = guiFactory.makeButton("Back", make_shared<eventFunctionType>(
         [this](const Event& event) {
             cout << "clicked the back button" << endl;
@@ -146,6 +169,7 @@ void MainMenuScene::load() {
     optionsLayout->addItem(previousResolution, .3f, .6f);
     optionsLayout->addItem(selectResolution, .5f, .6f);
     optionsLayout->addItem(nextResolution, .7f, .6f);
+    optionsLayout->addItem(useControllerButton, .5f, .8f);
     optionsLayout->addItem(optionsBackButton, .9f, .9f);
     optionsLayout->setItemsAlive(false);
     optionsLayout->setItemsVisible(false);
@@ -161,6 +185,7 @@ void MainMenuScene::load() {
     entityManager.entities.push_back(previousResolution);
     entityManager.entities.push_back(selectResolution);
     entityManager.entities.push_back(nextResolution);
+    entityManager.entities.push_back(useControllerButton);
     entityManager.entities.push_back(optionsBackButton);
 }
 
