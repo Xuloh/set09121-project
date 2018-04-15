@@ -15,13 +15,14 @@ protected:
     float timer;
 
 	//added floats for keyframe / endframe
-	float keyFrame;
-	float endFrame;
+	unsigned keyFrame;
+	unsigned endFrame;
 
     sf::Vector2u spriteSize;
 
 	//set to keyframe
     unsigned currentTextureRect = keyFrame;
+
     std::vector<sf::IntRect> textureRects;
 
     void updateTextureRects();
@@ -36,12 +37,12 @@ public:
     void render() override;
 
 	//public key frame get/set methods
-	float getKeyFrame() const;
-	void setKeyFrame(float keyFrame);
+	unsigned getKeyFrame() const;
+	void setKeyFrame(unsigned keyFrame);
 	
 	//public end frame get/set methods
-	float getEndFrame() const;
-	void setEndFrame(float endFrame);
+	unsigned getEndFrame() const;
+	void setEndFrame(unsigned endFrame);
 
     float getAnimationTime() const;
     void setAnimationTime(float animationTime);
