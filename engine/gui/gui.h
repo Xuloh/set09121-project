@@ -107,8 +107,6 @@ namespace gui {
 		float height;
 
 		bool updateLayout;
-
-		void updateSize();
 	public:
 		// the layout's width relative to the window's width (ex: 0.5 is half the window's width)
 		float x;
@@ -127,5 +125,9 @@ namespace gui {
 		void handleEvent(const sf::Event& event) override;
 
 		void addItem(std::shared_ptr<ecm::Entity> entity, float x, float y);
+        void updateSize();
+
+        void setItemsAlive(bool alive);
+        void setItemsVisible(bool visible);
 	};
 }

@@ -131,7 +131,6 @@ void LayoutComponent::update(double dt) {
 void LayoutComponent::render() {}
 
 void LayoutComponent::handleEvent(const Event& event) {
-	updateLayout = true;
 	updateSize();
 }
 
@@ -140,6 +139,17 @@ void LayoutComponent::addItem(std::shared_ptr<ecm::Entity> entity, float x, floa
 }
 
 void LayoutComponent::updateSize() {
+    updateLayout = true;
 	width = renderer::getGUIView().getSize().x * x;
 	height = renderer::getGUIView().getSize().y * y;
+}
+
+void LayoutComponent::setItemsAlive(bool alive) {
+    for(auto& item : items)
+        item.entity->setAlive(alive);
+}
+
+void LayoutComponent::setItemsVisible(bool visible) {
+    for (auto& item : items)
+        item.entity->setVisible(visible);
 }
