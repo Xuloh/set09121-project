@@ -72,8 +72,11 @@ ClickComponent::~ClickComponent() {
 }
 
 void ClickComponent::handleEvent(const sf::Event& event) {
-	if (parent->isAlive() && onClick != nullptr && event.mouseButton.button == Mouse::Left && targetText.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
-		(*onClick)(event);
+	if (parent->isAlive() && onClick != nullptr && event.mouseButton.button == Mouse::Left) {
+        const auto mouseCoords = renderer::getWindow().mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }, renderer::getGUIView());
+        if (targetText.getGlobalBounds().contains(mouseCoords))
+            (*onClick)(event);
+    }
 }
 
 void ClickComponent::update(double dt) {}
@@ -92,13 +95,19 @@ MouseHoverComponent::~MouseHoverComponent() {
 
 void MouseHoverComponent::handleEvent(const sf::Event& event) {
     if (parent->isAlive()) {
-        if (!isMouseInArea && targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
-            isMouseInArea = true;
-            targetText.setFillColor(hoverColor);
+        if (!isMouseInArea) {
+            const auto& mouseCoords = renderer::getWindow().mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y }, renderer::getGUIView());
+            if (targetText.getGlobalBounds().contains(mouseCoords)) {
+                isMouseInArea = true;
+                targetText.setFillColor(hoverColor);
+            }
         }
-        else if (isMouseInArea && !targetText.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
-            isMouseInArea = false;
-            targetText.setFillColor(baseColor);
+        else {
+            const auto mouseCoords = renderer::getWindow().mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y }, renderer::getGUIView());
+            if (!targetText.getGlobalBounds().contains(mouseCoords)) {
+                isMouseInArea = false;
+                targetText.setFillColor(baseColor);
+            }
         }
     }
 }
