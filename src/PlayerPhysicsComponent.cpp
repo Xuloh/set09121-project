@@ -20,12 +20,12 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* parent, const Vector2f& s
     body->SetBullet(true);
     setRestitution(0.f);
     event::registerHandler(Event::KeyPressed, this);
-    event::registerHandler(Event::JoystickButtonReleased, this);
+    event::registerHandler(Event::JoystickButtonPressed, this);
 }
 
 PlayerPhysicsComponent::~PlayerPhysicsComponent() {
     event::unregisterHandler(Event::KeyPressed, this);
-    event::unregisterHandler(Event::JoystickButtonReleased, this);
+    event::unregisterHandler(Event::JoystickButtonPressed, this);
 }
 
 bool PlayerPhysicsComponent::isGrounded() const {
@@ -107,11 +107,11 @@ void PlayerPhysicsComponent::update(double dt) {
 }
 
 void PlayerPhysicsComponent::handleEvent(const Event& event) {
-    if (!input::usingController() && event.type == Event::KeyReleased) {
+    if (!input::usingController() && event.type == Event::KeyPressed) {
         if (event.key.code == input::getKey("Jump"))
             jump = true;
     }
-    else if(input::usingController() && event.type == Event::JoystickButtonReleased) {
+    else if(input::usingController() && event.type == Event::JoystickButtonPressed) {
         if (event.joystickButton.joystickId == 0 && event.joystickButton.button == input::getJoystickButton("Jump"))
             jump = true;
     }
