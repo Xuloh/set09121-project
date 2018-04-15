@@ -1,6 +1,7 @@
 #include "enemyAI.h"
 
 #include "Tilemap.h"
+#include "tilemap-system.h"
 #include <array>
 #include <queue>
 
@@ -48,9 +49,10 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish)
 {
 	static std::array<sf::Vector2i, 4> directions = { Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(0, -1) };
 
-	vector<vector<bool>> closed_nodes_map(ls::getWidth());
-	vector<vector<int>> open_nodes_map(ls::getWidth());
-	vector<vector<Vector2i>> direction_map(ls::getWidth());
+    const auto& tilemap = tilemap::getTilemap();
+	vector<vector<bool>> closed_nodes_map(tilemap->getWidth());
+	vector<vector<int>> open_nodes_map(tilemap->getWidth());
+	vector<vector<Vector2i>> direction_map(tilemap->getWidth());
 
 	// Queue of nodes to test. Priority ordered.
 	// We need two for when we redirect and copy the path
@@ -60,9 +62,9 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish)
 
 	// Initialise the lookup maps. Initially everything looks traversable and
 	// no route has been planned.
-	for (size_t y = 0; y < ls::getHeight(); ++y)
+	for (size_t y = 0; y < tilemap->getHeight(); ++y)
 	{
-		for (size_t x = 0; x < ls::getWidth(); ++x)
+		for (size_t x = 0; x < tilemap->getWidth(); ++x)
 		{
 			closed_nodes_map[x].push_back(false);
 			open_nodes_map[x].push_back(0);
@@ -115,8 +117,8 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish)
 			auto next = pos + dir;
 
 			// Check if nect is valid
-			if (!(next.x < 0 || next.x > ls::getWidth() || next.y < 0 || next.y > ls::getHeight() ||
-				ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::WALL ||
+			if (!(next.x < 0 || next.x > tilemap->getWidth() || next.y < 0 || next.y > tilemap->getHeight() ||
+                tilemap->getTile(Vector2u(next.x, next.y)) == tilemap::WALL ||
 				closed_nodes_map[next.x][next.y]))
 			{
 				// Generate new node
