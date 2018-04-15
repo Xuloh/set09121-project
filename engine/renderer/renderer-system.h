@@ -15,6 +15,18 @@ namespace renderer {
 	// initialise the renderer with the given Window
 	void initialise(sf::RenderWindow& window);
 
+    // returns the current resolution of the window
+    const sf::VideoMode& getResolution();
+
+    // applies the given resolution to the window
+    void setResolution(sf::VideoMode resolution);
+
+    // returns true if the window is in fullscreen or false if not
+    bool isFullscreen();
+
+    // sets the fullscreen state of the window
+    void setFullscreen(bool isFullscreen);
+
 	// shuts down the renderer
 	void shutdown();
 
