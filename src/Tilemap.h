@@ -7,20 +7,19 @@
 #include <string>
 
 namespace tilemap {
+    // the different kinds of tiles
+    enum Tile {
+        EMPTY = ' ',
+        START = 's',
+        END = 'e',
+        WALL = 'w',
+        ENEMY = 'x'
+    };
 
     // A subclass of sf::Drawable and sf::Transformable that represents a tile map
     // it can load a map from a text file and render it to a sf::RenderTarget
     class Tilemap : public sf::Drawable, public sf::Transformable {
     public:
-        // the different kinds of tiles
-        enum Tile {
-            EMPTY = ' ',
-            START = 's',
-            END = 'e',
-            WALL = 'w',
-            ENEMY = 'x'
-        };
-
         // load a map from the given file path
         void load(const std::string& filePath);
 
