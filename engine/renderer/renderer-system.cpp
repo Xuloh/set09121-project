@@ -20,6 +20,8 @@ static void resizeView(const Event& event) {
     guiView->setSize(newSize);
 }
 
+static auto resizeHandler = make_shared<event::eventFunctionType>(&resizeView);
+
 RenderWindow& renderer::getWindow() {
 	return *renderWindow;
 }
@@ -39,7 +41,7 @@ void renderer::initialise(RenderWindow& window) {
     sceneView.reset(new View({ 0.f, -windowSize.y, windowSize.x, windowSize.y }));
     guiView.reset(new View({ 0.f, 0.f, windowSize.x, windowSize.y }));
 
-    event::registerHandler(Event::Resized, &resizeView);
+    event::registerHandler(Event::Resized, resizeHandler);
 }
 
 void renderer::shutdown() {
@@ -49,7 +51,7 @@ void renderer::shutdown() {
     while (!gui.empty())
         gui.pop();
 
-    event::unregisterHandler(Event::Resized, &resizeView);
+    event::unregisterHandler(Event::Resized, resizeHandler);
 }
 
 void renderer::render() {
