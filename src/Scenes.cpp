@@ -188,8 +188,13 @@ void TestLevelScene::load() {
     auto playerSprite = player->addComponent<SpriteComponent>();
     playerSprite->setSprite();
     auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerIdle.png");
-    playerAnimator->setSpriteSize({ 64, 128 });
+
+	playerAnimator->setSpriteSize({ 64, 128 });
     playerAnimator->setAnimationTime(.2f);
+	
+	//added keyframe variable
+	playerAnimator->setKeyFrame(0);
+
     auto playerField = player->addComponent<GravityFieldComponent>(20.f);
     playerField->setForce(20.f);
     auto gravityRotate = player->addComponent<RotateGravityComponent>();

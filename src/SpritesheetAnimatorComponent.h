@@ -14,9 +14,13 @@ protected:
     float animationTime;
     float timer;
 
+	//added float for keyframe
+	float keyFrame;
+
     sf::Vector2u spriteSize;
 
-    unsigned currentTextureRect = 0;
+	//set to keyframe
+    unsigned currentTextureRect = keyFrame;
     std::vector<sf::IntRect> textureRects;
 
     void updateTextureRects();
@@ -29,6 +33,11 @@ public:
 
     void update(double dt) override;
     void render() override;
+
+
+	//public get/set methods
+	float getKeyFrame() const;
+	void setKeyFrame(float keyFrame);
 
     float getAnimationTime() const;
     void setAnimationTime(float animationTime);
