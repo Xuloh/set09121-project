@@ -21,13 +21,22 @@ void load() {
 	event::registerHandler(Event::Closed, make_shared<event::eventFunctionType>(&closeWindow));
 	event::registerHandler(Event::KeyReleased, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
 
-    // setup controls
+    // setup keyboard controls
     input::addControl("Left", Keyboard::Q, Keyboard::A);
     input::addControl("Right", Keyboard::D, Keyboard::D);
     input::addControl("Jump", Keyboard::Space, Keyboard::Space);
     input::addControl("GravityLeft", Keyboard::A, Keyboard::Q);
     input::addControl("GravityRight", Keyboard::E, Keyboard::E);
     input::setAzertyActive();
+
+    // setup controller controls
+    input::bindJoystickAxis("Left", Joystick::X, -100.f, 0.f);
+    input::bindJoystickAxis("Right", Joystick::X, 0.f, 100.f);
+    input::bindJoystickButton("Jump", 0);
+    input::bindJoystickButton("GravityLeft", 1);
+    input::bindJoystickButton("GravityRight", 2);
+
+    input::setUseController(true);
 
     // setup scenes
     scene::add("main-menu", make_shared<MainMenuScene>());
