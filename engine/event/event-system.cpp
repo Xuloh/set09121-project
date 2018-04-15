@@ -27,8 +27,8 @@ void event::registerHandler(const Event::EventType eventType, const eventFunctio
 }
 
 void event::unregisterHandler(const Event::EventType eventType, const eventFunction eventHandler) {
-	if(!eventHandlersFunctions.empty() && eventHandlersFunctions.count(eventType))
-		eventHandlersFunctions[eventType].erase(eventHandler);
+    if (!eventHandlersFunctions.empty() && eventHandlersFunctions.count(eventType))
+        eventHandlersFunctions[eventType].erase(eventHandler);
 }
 
 void event::unregisterAll() {
@@ -43,7 +43,7 @@ void event::update() {
 	while (window.pollEvent(event)) {
 		if(eventHandlersFunctions.count(event.type))
 			for (const auto& handler : eventHandlersFunctions[event.type])
-				handler(event);
+				(*handler)(event);
 		if(eventHandlers.count(event.type))
 			for (const auto& handler : eventHandlers[event.type])
 				handler->handleEvent(event);
