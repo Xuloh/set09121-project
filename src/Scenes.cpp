@@ -184,11 +184,11 @@ void TestLevelScene::load() {
     auto player = make_shared<Entity>();
     player->setOrigin({ .5f, .5f });
     player->setPosition({ 550.f, -300.f });
-    auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 64.f));
+    auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 128.f));
     auto playerSprite = player->addComponent<SpriteComponent>();
     playerSprite->setSprite();
     auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerRun.png");
-    playerAnimator->setSpriteSize({ 64, 64 });
+    playerAnimator->setSpriteSize({ 64, 128 });
     playerAnimator->setAnimationTime(.2f);
     auto playerField = player->addComponent<GravityFieldComponent>(20.f);
     playerField->setForce(20.f);
