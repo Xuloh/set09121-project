@@ -18,8 +18,8 @@ void closeWindowOnEscapePressed(const Event& event) {
 
 void load() {
 	// register window handlers
-	event::registerHandler(Event::Closed, &closeWindow);
-	event::registerHandler(Event::KeyReleased, &closeWindowOnEscapePressed);
+	event::registerHandler(Event::Closed, make_shared<event::eventFunctionType>(&closeWindow));
+	event::registerHandler(Event::KeyReleased, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
 
     // setup controls
     input::addControl("Left", Keyboard::Q, Keyboard::A);
@@ -59,7 +59,6 @@ int main() {
     popup::initialise();
 
 	load();
-
 	while(window.isOpen()) {
 		window.clear();
 		update();
