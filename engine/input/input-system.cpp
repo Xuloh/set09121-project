@@ -19,6 +19,7 @@ static unordered_map<string, input::AxisControl> joystickAxisMap;
 static const unordered_map<string, Keyboard::Key>* activeKeymap = &qwertyKeymap;
 
 static auto useController = false;
+static unsigned controller = 0;
 
 void input::addControl(const string& control, const Keyboard::Key defaultAzerty, const Keyboard::Key defaultQwerty) {
 	controls.insert(control);
@@ -89,8 +90,14 @@ bool input::usingController() {
 }
 
 void input::setUseController(const bool useController) {
-    if (Joystick::isConnected(0))
-        ::useController = useController;
+    if (useController) {
+        for (unsigned i = 0; i < Joystick::Count; i++)
+            if (Joystick::isConnected(i)) {
+                ::useController = true;
+                controller = i;
+                break;
+            }
+    }
     else
         ::useController = false;
 }
@@ -100,10 +107,10 @@ bool input::isControlPressed(const string& control) {
         if (!useController)
             return Keyboard::isKeyPressed(activeKeymap->at(control));
         if (joystickButtonsMap.count(control))
-            return Joystick::isButtonPressed(0, joystickButtonsMap[control]);
+            return Joystick::isButtonPressed(controller, joystickButtonsMap[control]);
         if(joystickAxisMap.count(control)) {
             const auto& axisControl = joystickAxisMap[control];
-            const auto axisPosition = Joystick::getAxisPosition(0, axisControl.axis);
+            const auto axisPosition = Joystick::getAxisPosition(controller, axisControl.axis);
             return axisPosition >= axisControl.min && axisPosition <= axisControl.max;
         }
     }
