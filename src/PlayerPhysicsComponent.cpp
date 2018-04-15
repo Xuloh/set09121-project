@@ -20,10 +20,12 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* parent, const Vector2f& s
     body->SetBullet(true);
     setRestitution(0.f);
     event::registerHandler(Event::KeyPressed, this);
+    event::registerHandler(Event::JoystickButtonReleased, this);
 }
 
 PlayerPhysicsComponent::~PlayerPhysicsComponent() {
     event::unregisterHandler(Event::KeyPressed, this);
+    event::unregisterHandler(Event::JoystickButtonReleased, this);
 }
 
 bool PlayerPhysicsComponent::isGrounded() const {
@@ -104,8 +106,14 @@ void PlayerPhysicsComponent::update(double dt) {
 }
 
 void PlayerPhysicsComponent::handleEvent(const Event& event) {
-    if (event.key.code == input::getKey("Jump"))
-        jump = true;
+    if (!input::usingController() && event.type == Event::KeyReleased) {
+        if (event.key.code == input::getKey("Jump"))
+            jump = true;
+    }
+    else if(input::usingController() && event.type == Event::JoystickButtonReleased) {
+        if (event.joystickButton.joystickId == 0 && event.joystickButton.button == input::getJoystickButton("Jump"))
+            jump = true;
+    }
 }
 
 float PlayerPhysicsComponent::getGroundSpeed() const {
