@@ -225,6 +225,8 @@ void TestLevelScene::load() {
 	
 	//added keyframe variable
 	playerAnimator->setKeyFrame(0);
+	//added endframe variable
+	playerAnimator->setEndFrame(15);
 
     auto playerField = player->addComponent<GravityFieldComponent>(20.f);
     playerField->setForce(20.f);

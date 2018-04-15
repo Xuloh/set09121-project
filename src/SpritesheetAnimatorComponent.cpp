@@ -37,7 +37,9 @@ void SpritesheetAnimatorComponent::update(const double dt) {
     timer -= float(dt);
     if (timer <= 0.f) {
         sprite.setTextureRect(textureRects[currentTextureRect]);
-        currentTextureRect = (currentTextureRect + 1) % textureRects.size();
+		while (currentTextureRect < endFrame) {
+			currentTextureRect = (currentTextureRect + 1) % textureRects.size();
+		}
         timer = animationTime;
     }
 }
