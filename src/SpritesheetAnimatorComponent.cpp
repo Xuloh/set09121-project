@@ -16,8 +16,8 @@ SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const
 
     sprite.setTexture(*texture);
     spriteSize = texture->getSize();
-    currentTextureRect = keyFrame;
-    textureRects.emplace_back(0, 0, spriteSize.x, spriteSize.y);
+    currentTextureRect = 0;
+	textureRects.emplace_back(0, 0, spriteSize.x, spriteSize.y);
 
     this->animationTime = animationTime;
     timer = 0.f;
@@ -55,6 +55,18 @@ float SpritesheetAnimatorComponent::getKeyFrame() const
 void SpritesheetAnimatorComponent::setKeyFrame(float keyFrame)
 {
 	this->keyFrame = keyFrame;
+}
+
+//endframe getter 
+float SpritesheetAnimatorComponent::getEndFrame() const
+{
+	return endFrame;
+}
+
+//endframe setter
+void SpritesheetAnimatorComponent::setEndFrame(float endFrame)
+{
+	this->endFrame = endFrame;
 }
 
 

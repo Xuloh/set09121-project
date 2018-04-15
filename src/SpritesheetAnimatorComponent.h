@@ -14,8 +14,9 @@ protected:
     float animationTime;
     float timer;
 
-	//added float for keyframe
+	//added floats for keyframe / endframe
 	float keyFrame;
+	float endFrame;
 
     sf::Vector2u spriteSize;
 
@@ -34,10 +35,13 @@ public:
     void update(double dt) override;
     void render() override;
 
-
-	//public get/set methods
+	//public key frame get/set methods
 	float getKeyFrame() const;
 	void setKeyFrame(float keyFrame);
+	
+	//public end frame get/set methods
+	float getEndFrame() const;
+	void setEndFrame(float endFrame);
 
     float getAnimationTime() const;
     void setAnimationTime(float animationTime);
