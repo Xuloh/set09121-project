@@ -168,7 +168,7 @@ void Tilemap::buildBodies() {
     for(unsigned y = 0; y < height; y++) {
         for(unsigned x = 0; x < width; x++) {
             const auto tile = getTile({ x, y });
-            if(tile == WALL)
+            if(tile == WALL || tile == FLOOR)
                 tilesData.push_back({ getTilePosition({ x, y }), tileSize, tile });
         }
     }

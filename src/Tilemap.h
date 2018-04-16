@@ -15,7 +15,8 @@ namespace tilemap {
         START = 's',
         END = 'e',
         WALL = 'w',
-        ENEMY = 'x'
+        ENEMY = 'x',
+		FLOOR = 'f'
     };
 
     // A subclass of sf::Drawable and sf::Transformable that represents a tile map
