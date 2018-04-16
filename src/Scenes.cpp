@@ -43,10 +43,10 @@ void MainMenuScene::load() {
 	playButton->setOrigin({ 0.5f, 0.5f });
 
 	auto optionsButton = guiFactory.makeButton("Options", make_shared<eventFunctionType>(
-		[this](const Event& event) {
-		cout << "clicked the options button" << endl;
-		scene::load("options-menu");
-	}
+		[](const Event& event) {
+	        cout << "clicked the options button" << endl;
+	        scene::load("options-menu");
+	    }
 	));
 	optionsButton->setOrigin({ 0.5f, 0.5f });
 
@@ -332,7 +332,7 @@ void TestLevelScene::load() {
 	auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 128.f));
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	playerSprite->setSprite();
-	auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerIdle.png");
+	auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>(resources::get<Texture>("PlayerIdle.png"));
 	playerAnimator->setSpriteSize({ 64, 128 });
 	playerAnimator->setAnimationTime(.2f);
 

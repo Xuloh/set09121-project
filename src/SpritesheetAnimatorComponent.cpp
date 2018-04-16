@@ -8,12 +8,8 @@ using namespace std;
 using namespace sf;
 using namespace ecm;
 
-SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const std::string& texturePath, const float animationTime) : Component(parent), sprite(this->parent->getComponent<SpriteComponent>()->getSprite()) {
-	texture = make_unique<Texture>();
-
-	if (!texture->loadFromFile(texturePath))
-		cout << "could not load texture : " << texturePath << endl;
-
+SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const shared_ptr<Texture> texture, const float animationTime) : Component(parent), sprite(this->parent->getComponent<SpriteComponent>()->getSprite()) {
+    this->texture = texture;
 	sprite.setTexture(*texture);
 	spriteSize = texture->getSize();
 	currentTextureRect = 0;

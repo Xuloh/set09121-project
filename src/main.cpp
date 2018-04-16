@@ -76,7 +76,6 @@ void load() {
     tilemap->setDefaultSpriteIndex(1);
     tilemap->setTileSpriteIndex(tilemap::WALL, 2);
 
-
 	// setup scenes
 	scene::add("main-menu", make_shared<MainMenuScene>());
 	scene::add("options-menu", make_shared<OptionsScene>());

@@ -9,7 +9,7 @@
 class SpritesheetAnimatorComponent : public ecm::Component {
 protected:
 	sf::Sprite& sprite;
-	std::unique_ptr<sf::Texture> texture;
+	std::shared_ptr<sf::Texture> texture;
 
 	float animationTime;
 	float timer;
@@ -20,8 +20,7 @@ protected:
 
 	sf::Vector2u spriteSize;
 
-	//set to keyframe
-	unsigned currentTextureRect = keyFrame;
+	unsigned currentTextureRect;
 
 	std::vector<sf::IntRect> textureRects;
 
@@ -29,7 +28,7 @@ protected:
 
 public:
 	SpritesheetAnimatorComponent() = delete;
-	SpritesheetAnimatorComponent(ecm::Entity* parent, const std::string& texturePath, float animationTime = 1.f);
+	SpritesheetAnimatorComponent(ecm::Entity* parent, std::shared_ptr<sf::Texture> texture, float animationTime = 1.f);
 
 	~SpritesheetAnimatorComponent() = default;
 
