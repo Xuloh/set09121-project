@@ -325,6 +325,7 @@ void TestLevelScene::load() {
 	auto wallRPhysics = wallR->addComponent<physics::PhysicsComponent>(false, wallSize);
 	wallRPhysics->setRestitution(0.f);
     */
+    physics::resetGravity();
     tilemap::getTilemap()->load("res/testLevel.txt");
 	auto player = make_shared<Entity>();
 	player->setOrigin({ .5f, .5f });
