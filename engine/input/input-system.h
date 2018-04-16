@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <set>
 #include <SFML/Window.hpp>
 
 namespace input {
@@ -19,6 +20,9 @@ namespace input {
 	// register a new control name
 	void addControl(const std::string& control, sf::Keyboard::Key defaultAzerty, sf::Keyboard::Key defaultQwerty);
 	
+    // get the list of registered controls
+    const std::set<std::string>& getControls();
+
 	// binds the given key to the given control in the custom keymap, the control must be registered with addControl
 	// returns true if the key was bound or false if the control was not registered or if the key is already bound to another control
 	bool bindKey(const std::string& control, sf::Keyboard::Key key);

@@ -27,6 +27,10 @@ void input::addControl(const string& control, const Keyboard::Key defaultAzerty,
 	qwertyKeymap[control] = defaultQwerty;
 }
 
+const set<string>& input::getControls() {
+    return controls;
+}
+
 bool input::bindKey(const string& control, const Keyboard::Key key) {
 	if(controls.find(control) != controls.end()) {
 		for(const auto& pair : customKeymap)
