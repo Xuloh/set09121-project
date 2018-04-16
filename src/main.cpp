@@ -3,6 +3,7 @@
 #include "Scenes.h"
 #include "main.h"
 #include "popup-system.h"
+#include "tilemap-system.h"
 
 using namespace std;
 using namespace sf;
@@ -66,6 +67,14 @@ void load() {
 	input::bindJoystickButton("Jump", 0);
 	input::bindJoystickButton("GravityLeft", 4);
 	input::bindJoystickButton("GravityRight", 5);
+
+    // setup tilemap
+    auto tilemap = tilemap::getTilemap();
+    tilemap->setTexture(resources::get<Texture>("testsheet.png"));
+    tilemap->setSpriteSize({ 32, 32 });
+    tilemap->setTileSize({ 64, 64 });
+    tilemap->setDefaultSpriteIndex(1);
+    tilemap->setTileSpriteIndex(tilemap::WALL, 2);
 
     // setup scenes
     scene::add("main-menu", make_shared<MainMenuScene>());
