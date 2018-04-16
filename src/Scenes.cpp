@@ -6,7 +6,6 @@
 #include "Scenes.h"
 #include "main.h"
 #include "ShapeComponent.h"
-#include "physics/PhysicsComponent.h"
 #include "PlayerPhysicsComponent.h"
 #include "SpriteComponent.h"
 #include "SpritesheetAnimatorComponent.h"
@@ -14,6 +13,7 @@
 #include "RotateGravityComponent.h"
 #include <renderer/renderer-system.h>
 #include "tilemap-system.h"
+#include "OxygenTimerComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -340,6 +340,8 @@ void TestLevelScene::load() {
 	playerField->setForce(20.f);
 	auto gravityRotate = player->addComponent<RotateGravityComponent>();
 
+    auto playerOxygen = player->addComponent<OxygenTimerComponent>(5.f);
+
     /*
 	auto box = make_shared<Entity>();
 	box->setOrigin({ .5f, .5f });
@@ -364,3 +366,36 @@ void TestLevelScene::render() {
     tilemap::render();
 	Scene::render();
 }
+
+// *** Game Over Scene *** //
+
+void GameOverScene::load() {
+    const auto font = resources::get<Font>("Xolonium-Bold.ttf");
+    const GUISettings settings = { Color::White, Color::Cyan, font.get(), 32.f };
+    auto guiFactory = GUIFactory(settings);
+
+    auto gameOverLabel = guiFactory.makeLabel("Game Over");
+    gameOverLabel->setOrigin({ .5f, .5f });
+
+    auto hintLabel = guiFactory.makeLabel("Press Escape to return to main menu ...");
+    hintLabel->getComponent<TextComponent>()->getText().setCharacterSize(16.f);
+    hintLabel->setOrigin({ .5f, .5f });
+
+    auto _layout = make_shared<Entity>();
+    auto layout = _layout->addComponent<LayoutComponent>(1.f, 1.f);
+    layout->addItem(gameOverLabel, .5f, .5f);
+    layout->addItem(hintLabel, .5f, .6f);
+
+    entityManager.entities.push_back(_layout);
+    entityManager.entities.push_back(gameOverLabel);
+    entityManager.entities.push_back(hintLabel);
+}
+
+void GameOverScene::update(const double dt) {
+    Scene::update(dt);
+}
+
+void GameOverScene::render() {
+    Scene::render();
+}
+
