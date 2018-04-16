@@ -60,35 +60,34 @@ bool PlayerPhysicsComponent::isBelow(const b2Vec2 point) const {
 
 void PlayerPhysicsComponent::update(double dt) {
 	auto velocity = getVelocity();
-	//cout << (grounded ? "grounded" : "not grounded") << endl;
 
-	auto animator = parent->getComponent<SpritesheetAnimatorComponent>();
-	// move left or right
+    // update grounded state
+    grounded = isGrounded();
+    if (!grounded)
+        setFriction(0.f);
+    else
+        setFriction(.1f);
+
+	// move left
 	if (input::isControlPressed("Left")) {
 		if (velocity.x > -maxVelocity.x)
 			impulse(float(dt) * groundSpeed * leftwards);
-		animator->setKeyFrame(23);
-		animator->setEndFrame(28);
 	}
+    // move right
 	else if (input::isControlPressed("Right")) {
 		if (velocity.x < maxVelocity.x)
 			impulse(float(dt) * -groundSpeed * leftwards);
-		animator->setKeyFrame(29);
-		animator->setEndFrame(34);
 	}
+    // idle
 	else {
-		animator->setKeyFrame(0);
-		animator->setEndFrame(14);
 		if (downwards.x == 0)
 			dampen({ .9f, 1.f });
 		if (downwards.y == 0)
 			dampen({ 1.f, .9f });
 	}
-
 	// jump
 	if (jump) {
 		jump = false;
-		grounded = isGrounded();
 		if (grounded) {
 			// keep velocity depending on the downwards direction
 			setVelocity({ !downwards.x * velocity.x, !downwards.y * velocity.y });
@@ -96,15 +95,28 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 	}
 
-	// update grounded state
-	if (!grounded) {
-		animator->setKeyFrame(15);
-		animator->setEndFrame(22);
-		grounded = isGrounded();
-		setFriction(0.f);
-	}
-	else
-		setFriction(.1f);
+    // update the player animation based on the physics state
+    auto animator = parent->getComponent<SpritesheetAnimatorComponent>();
+    // jump animation
+    if (!grounded) {
+        animator->setKeyFrame(15);
+        animator->setEndFrame(22);
+    }
+    // move left animation
+    else if (input::isControlPressed("Left")) {
+        animator->setKeyFrame(23);
+        animator->setEndFrame(28);
+    }
+    // move right animation
+    else if (input::isControlPressed("Right")) {
+        animator->setKeyFrame(29);
+        animator->setEndFrame(34);
+    }
+    // idle animation
+    else {
+        animator->setKeyFrame(0);
+        animator->setEndFrame(14);
+    }
 
 	// restrain velocity to max velocity or below
 	velocity = getVelocity();
