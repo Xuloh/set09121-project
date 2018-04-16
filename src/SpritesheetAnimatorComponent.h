@@ -8,45 +8,46 @@
 
 class SpritesheetAnimatorComponent : public ecm::Component {
 protected:
-    sf::Sprite& sprite;
-    std::unique_ptr<sf::Texture> texture;
+	sf::Sprite& sprite;
+	std::unique_ptr<sf::Texture> texture;
 
-    float animationTime;
-    float timer;
+	float animationTime;
+	float timer;
 
 	//added floats for keyframe / endframe
 	unsigned keyFrame;
 	unsigned endFrame;
 
-    sf::Vector2u spriteSize;
+	sf::Vector2u spriteSize;
 
 	//set to keyframe
-    unsigned currentTextureRect = keyFrame;
+	unsigned currentTextureRect = keyFrame;
 
-    std::vector<sf::IntRect> textureRects;
+	std::vector<sf::IntRect> textureRects;
 
-    void updateTextureRects();
+	void updateTextureRects();
 
 public:
-    SpritesheetAnimatorComponent() = delete;
-    SpritesheetAnimatorComponent(ecm::Entity* parent, const std::string& texturePath, float animationTime = 1.f);
+	SpritesheetAnimatorComponent() = delete;
+	SpritesheetAnimatorComponent(ecm::Entity* parent, const std::string& texturePath, float animationTime = 1.f);
 
-    ~SpritesheetAnimatorComponent() = default;
+	~SpritesheetAnimatorComponent() = default;
 
-    void update(double dt) override;
-    void render() override;
+	void update(double dt) override;
+	void render() override;
 
 	//public key frame get/set methods
 	unsigned getKeyFrame() const;
 	void setKeyFrame(unsigned keyFrame);
-	
+
+
 	//public end frame get/set methods
 	unsigned getEndFrame() const;
 	void setEndFrame(unsigned endFrame);
 
-    float getAnimationTime() const;
-    void setAnimationTime(float animationTime);
+	float getAnimationTime() const;
+	void setAnimationTime(float animationTime);
 
-    const sf::Vector2u& getSpriteSize() const;
-    void setSpriteSize(sf::Vector2u spriteSize);
+	const sf::Vector2u& getSpriteSize() const;
+	void setSpriteSize(sf::Vector2u spriteSize);
 };

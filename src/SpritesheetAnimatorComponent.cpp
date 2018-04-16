@@ -9,37 +9,37 @@ using namespace sf;
 using namespace ecm;
 
 SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const std::string& texturePath, const float animationTime) : Component(parent), sprite(this->parent->getComponent<SpriteComponent>()->getSprite()) {
-    texture = make_unique<Texture>();
+	texture = make_unique<Texture>();
 
-    if(!texture->loadFromFile(texturePath))
-        cout << "could not load texture : " << texturePath << endl;
+	if (!texture->loadFromFile(texturePath))
+		cout << "could not load texture : " << texturePath << endl;
 
-    sprite.setTexture(*texture);
-    spriteSize = texture->getSize();
-    currentTextureRect = 0;
+	sprite.setTexture(*texture);
+	spriteSize = texture->getSize();
+	currentTextureRect = 0;
 	textureRects.emplace_back(0, 0, spriteSize.x, spriteSize.y);
 
-    this->animationTime = animationTime;
-    timer = 0.f;
+	this->animationTime = animationTime;
+	timer = 0.f;
 }
 
 void SpritesheetAnimatorComponent::updateTextureRects() {
-    textureRects.clear();
-    const auto& textureSize = texture->getSize();
+	textureRects.clear();
+	const auto& textureSize = texture->getSize();
 	for (unsigned j = 0; j <= textureSize.y - spriteSize.y; j += spriteSize.y) {
 		for (unsigned i = 0; i <= textureSize.x - spriteSize.x; i += spriteSize.x) {
-            textureRects.emplace_back(i, j, spriteSize.x, spriteSize.y);
-        }
-    }
+			textureRects.emplace_back(i, j, spriteSize.x, spriteSize.y);
+		}
+	}
 }
 
 void SpritesheetAnimatorComponent::update(const double dt) {
-    timer -= float(dt);
-    if (timer <= 0.f) {
-        sprite.setTextureRect(textureRects[currentTextureRect]);
-		currentTextureRect = (currentTextureRect + 1) % (endFrame - keyFrame) + keyFrame;
-        timer = animationTime;
-    }
+	timer -= float(dt);
+	if (timer <= 0.f) {
+		sprite.setTextureRect(textureRects[currentTextureRect]);
+		currentTextureRect = (currentTextureRect + 1) % (endFrame - keyFrame - 1) + keyFrame;
+		timer = animationTime;
+	}
 }
 
 void SpritesheetAnimatorComponent::render() {}
@@ -71,19 +71,19 @@ void SpritesheetAnimatorComponent::setEndFrame(unsigned endFrame)
 
 
 float SpritesheetAnimatorComponent::getAnimationTime() const {
-    return animationTime;
+	return animationTime;
 }
 
 void SpritesheetAnimatorComponent::setAnimationTime(float animationTime) {
-    this->animationTime = animationTime;
+	this->animationTime = animationTime;
 }
 
 const Vector2u& SpritesheetAnimatorComponent::getSpriteSize() const {
-    return spriteSize;
+	return spriteSize;
 }
 
 void SpritesheetAnimatorComponent::setSpriteSize(const Vector2u spriteSize) {
-    this->spriteSize = spriteSize;
-    updateTextureRects();
+	this->spriteSize = spriteSize;
+	updateTextureRects();
 }
 
