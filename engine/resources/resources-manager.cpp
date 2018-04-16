@@ -16,7 +16,7 @@ template<> shared_ptr<Texture> resources::load(const string& name) {
     auto texture = make_shared<Texture>();
 	//Uncomment for debug
 	//if (!texture->loadFromFile("debug/res/sprites" + name))
-    if (!texture->loadFromFile("res/sprites" + name))
+    if (!texture->loadFromFile("res/sprites/" + name))
         throw string("Could not load sprite : " + name);
     return texture;
 }
