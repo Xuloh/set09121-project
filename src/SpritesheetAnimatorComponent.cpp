@@ -17,6 +17,8 @@ SpritesheetAnimatorComponent::SpritesheetAnimatorComponent(Entity* parent, const
 	sprite.setTexture(*texture);
 	spriteSize = texture->getSize();
 	currentTextureRect = 0;
+    keyFrame = 0;
+    endFrame = 0;
 	textureRects.emplace_back(0, 0, spriteSize.x, spriteSize.y);
 
 	this->animationTime = animationTime;
@@ -35,11 +37,13 @@ void SpritesheetAnimatorComponent::updateTextureRects() {
 
 void SpritesheetAnimatorComponent::update(const double dt) {
 	timer -= float(dt);
-	if (timer <= 0.f) {
-		sprite.setTextureRect(textureRects[currentTextureRect]);
-		currentTextureRect = (currentTextureRect + 1) % (endFrame - keyFrame - 1) + keyFrame;
-		timer = animationTime;
-	}
+    if (timer <= 0.f) {
+        sprite.setTextureRect(textureRects[currentTextureRect]);
+        currentTextureRect++;
+        if (currentTextureRect > endFrame)
+            currentTextureRect = keyFrame;
+        timer = animationTime;
+    }
 }
 
 void SpritesheetAnimatorComponent::render() {}
@@ -54,7 +58,12 @@ unsigned SpritesheetAnimatorComponent::getKeyFrame() const
 //keyframe setter
 void SpritesheetAnimatorComponent::setKeyFrame(unsigned keyFrame)
 {
-	this->keyFrame = keyFrame;
+    // reset the animation to the start if key frame is modified
+    if (keyFrame != this->keyFrame) {
+        this->keyFrame = keyFrame;
+        currentTextureRect = keyFrame;
+        timer = 0.f;
+    }
 }
 
 //endframe getter 
