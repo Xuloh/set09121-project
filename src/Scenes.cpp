@@ -13,6 +13,7 @@
 #include "GravityFieldComponent.h"
 #include "RotateGravityComponent.h"
 #include <renderer/renderer-system.h>
+#include "tilemap-system.h"
 
 using namespace std;
 using namespace sf;
@@ -297,7 +298,7 @@ void MainMenuScene::handleEvent(const sf::Event& event) {
 // *** TestLevelScene class *** //
 
 void TestLevelScene::load() {
-	const auto groundSize = Vector2f(500.f, 50.f);
+	/*const auto groundSize = Vector2f(500.f, 50.f);
 	auto ground = make_shared<Entity>();
 	ground->setOrigin({ .5f, .5f });
 	ground->setPosition({ 500.f, -50.f });
@@ -333,10 +334,11 @@ void TestLevelScene::load() {
 	wallRShape->getShape().setFillColor(Color::Yellow);
 	auto wallRPhysics = wallR->addComponent<physics::PhysicsComponent>(false, wallSize);
 	wallRPhysics->setRestitution(0.f);
-
+    */
+    tilemap::getTilemap()->load("res/testLevel.txt");
 	auto player = make_shared<Entity>();
 	player->setOrigin({ .5f, .5f });
-	player->setPosition({ 550.f, -300.f });
+	player->setPosition({ 100.f, 100.f });
 	auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 128.f));
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	playerSprite->setSprite();
@@ -348,6 +350,7 @@ void TestLevelScene::load() {
 	playerField->setForce(20.f);
 	auto gravityRotate = player->addComponent<RotateGravityComponent>();
 
+    /*
 	auto box = make_shared<Entity>();
 	box->setOrigin({ .5f, .5f });
 	box->setPosition({ 400.f, -300.f });
@@ -358,9 +361,9 @@ void TestLevelScene::load() {
 	entityManager.entities.push_back(ground);
 	entityManager.entities.push_back(wallL);
 	entityManager.entities.push_back(wallR);
-	entityManager.entities.push_back(ceil);
+	entityManager.entities.push_back(ceil);*/
 	entityManager.entities.push_back(player);
-	entityManager.entities.push_back(box);
+	//entityManager.entities.push_back(box);
 }
 
 void TestLevelScene::update(double dt) {
@@ -368,5 +371,6 @@ void TestLevelScene::update(double dt) {
 }
 
 void TestLevelScene::render() {
+    tilemap::render();
 	Scene::render();
 }
