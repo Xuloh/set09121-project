@@ -341,16 +341,8 @@ void TestLevelScene::load() {
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	playerSprite->setSprite();
 	auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerIdle.png");
-
-	//added keyframe variable
-	//playerAnimator->setKeyFrame(0);
-	//added endframe variable
-	//playerAnimator->setEndFrame(15);
-
 	playerAnimator->setSpriteSize({ 64, 128 });
 	playerAnimator->setAnimationTime(.2f);
-
-
 
 	auto playerField = player->addComponent<GravityFieldComponent>(20.f);
 	playerField->setForce(20.f);
