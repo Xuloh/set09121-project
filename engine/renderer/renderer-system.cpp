@@ -53,7 +53,7 @@ void renderer::initialise(RenderWindow& window) {
 
     const auto windowSize = Vector2f(window.getSize());
 
-    sceneView.reset(new View({ 0.f, -windowSize.y, windowSize.x, windowSize.y }));
+    sceneView.reset(new View({ 0.f, 0.f, windowSize.x, windowSize.y }));
     guiView.reset(new View({ 0.f, 0.f, windowSize.x, windowSize.y }));
 
     event::registerHandler(Event::Resized, resizeHandler);
