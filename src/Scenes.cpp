@@ -191,6 +191,28 @@ void MainMenuScene::load() {
     ));
     nextControl->setOrigin({ .5f, .5f });
 
+    auto displayFpsButton = make_shared<Entity>();
+    displayFpsButton->setOrigin({ .5f, .5f });
+    auto displayFpsText = displayFpsButton->addComponent<TextComponent>();
+    displayFpsText->setText();
+    displayFpsText->getText().setFont(*settings.font);
+    displayFpsText->getText().setCharacterSize(settings.characterSize);
+    displayFpsText->getText().setFillColor(settings.baseColor);
+    displayFpsText->getText().setString("FPS counter disabled");
+    auto displayFpsHover = displayFpsButton->addComponent<MouseHoverComponent>();
+    displayFpsHover->baseColor = settings.baseColor;
+    displayFpsHover->hoverColor = settings.hoverColor;
+    auto displayFpsClick = displayFpsButton->addComponent<ClickComponent>();
+    displayFpsClick->onClick = make_shared<eventFunctionType>(
+        [displayFpsText](const Event& event) {
+        displayFramerate = !displayFramerate;
+        if (displayFramerate)
+            displayFpsText->getText().setString("FPS counter enabled");
+        else
+            displayFpsText->getText().setString("FPS counter disabled");
+    }
+    );
+
     auto optionsBackButton = guiFactory.makeButton("Back", make_shared<eventFunctionType>(
         [this](const Event& event) {
             cout << "clicked the back button" << endl;
@@ -215,17 +237,18 @@ void MainMenuScene::load() {
     optionsMenuLayout->setAlive(false);
     optionsMenuLayout->setVisible(false);
     auto optionsLayout = optionsMenuLayout->addComponent<LayoutComponent>(1.f, 1.f);
-    optionsLayout->addItem(options, .5f, 1.f / 6.f);
-    optionsLayout->addItem(fullscreenButton, .5f, 2.f / 7.f);
-    optionsLayout->addItem(previousResolution, .3f, 3.f / 7.f);
-    optionsLayout->addItem(selectResolution, .5f, 3.f / 7.f);
-    optionsLayout->addItem(nextResolution, .7f, 3.f / 7.f);
-    optionsLayout->addItem(useControllerButton, .5f, 4.f / 7.f);
-    optionsLayout->addItem(azertyButton, .5f, 5.f / 7.f);
-    optionsLayout->addItem(qwertyButton, .5f, 5.f / 7.f);
-    optionsLayout->addItem(previousControl, .3f, 6.f / 7.f);
-    optionsLayout->addItem(selectControl, .5f, 6.f / 7.f);
-    optionsLayout->addItem(nextControl, .7f, 6.f / 7.f);
+    optionsLayout->addItem(options, .5f, 1.f / 8.f);
+    optionsLayout->addItem(fullscreenButton, .5f, 2.f / 8.f);
+    optionsLayout->addItem(previousResolution, .3f, 3.f / 8.f);
+    optionsLayout->addItem(selectResolution, .5f, 3.f / 8.f);
+    optionsLayout->addItem(nextResolution, .7f, 3.f / 8.f);
+    optionsLayout->addItem(useControllerButton, .5f, 4.f / 8.f);
+    optionsLayout->addItem(azertyButton, .5f, 5.f / 8.f);
+    optionsLayout->addItem(qwertyButton, .5f, 5.f / 8.f);
+    optionsLayout->addItem(previousControl, .3f, 6.f / 8.f);
+    optionsLayout->addItem(selectControl, .5f, 6.f / 8.f);
+    optionsLayout->addItem(nextControl, .7f, 6.f / 8.f);
+    optionsLayout->addItem(displayFpsButton, .5f, 7.f / 8.f);
     optionsLayout->addItem(optionsBackButton, .9f, .9f);
     optionsLayout->setItemsAlive(false);
     optionsLayout->setItemsVisible(false);
@@ -247,6 +270,7 @@ void MainMenuScene::load() {
     entityManager.entities.push_back(previousControl);
     entityManager.entities.push_back(selectControl);
     entityManager.entities.push_back(nextControl);
+    entityManager.entities.push_back(displayFpsButton);
     entityManager.entities.push_back(optionsBackButton);
 }
 
