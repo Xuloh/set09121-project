@@ -1,11 +1,12 @@
 #include "Tilemap.h"
 #include <fstream>
 #include <iostream>
+#include <physics/physics-system.h>
 
 using namespace std;
 using namespace sf;
-
 using namespace tilemap;
+using namespace physics;
 
 void Tilemap::load(const string& filePath) {
     size_t width = 0;
@@ -49,7 +50,6 @@ void Tilemap::load(const string& filePath) {
 
     // check that the number of tiles and the width and height are correct
     if (tempTiles.size() != width * height) {
-        cout << tempTiles.size() << " | " << width << " | " << height << endl;
         throw string("An error occured while parsing level file : " + filePath);
     }
     // copy the tiles
@@ -63,13 +63,14 @@ void Tilemap::load(const string& filePath) {
          << "(" << width * height << ") tiles" << endl;
     
     buildVertices();
+    buildBodies();
 }
 
 void Tilemap::setTexture(const shared_ptr<Texture> texture) {
     this->texture = texture;
 }
 
-void Tilemap::setTileSize(const Vector2u& tileSize) {
+void Tilemap::setTileSize(const Vector2f& tileSize) {
     this->tileSize = tileSize;
 }
 
@@ -95,6 +96,10 @@ Tile Tilemap::getTile(const Vector2u position) const {
     return tiles[position.y * width + position.x];
 }
 
+Vector2f Tilemap::getTilePosition(const Vector2u position) const {
+    return { float(position.x) * tileSize.x, float(position.y) * tileSize.y };
+}
+
 size_t Tilemap::getWidth() const {
     return width;
 }
@@ -107,10 +112,6 @@ void Tilemap::draw(RenderTarget& target, RenderStates states) const {
     states.transform *= getTransform();
     states.texture = texture.get();
     target.draw(vertices, states);
-}
-
-template<typename T> ostream& operator<<(ostream& out, Vector2<T>& vector) {
-    return out << "[" << vector.x << "," << vector.y << "]";
 }
 
 void Tilemap::buildVertices() {
@@ -146,5 +147,77 @@ void Tilemap::buildVertices() {
             quad[2].texCoords = { float(spriteX + 1) * spriteSize.x, float(spriteY + 1) * spriteSize.y };
             quad[3].texCoords = { float(spriteX) * spriteSize.x, float(spriteY + 1) * spriteSize.y };
         }
+    }
+}
+
+void Tilemap::buildBodies() {
+    // destroy the old box2d bodies
+    auto world = getWorld();
+    for(auto& body : bodies)
+        world->DestroyBody(body);
+    bodies.clear();
+
+    struct TileData {
+        Vector2f position;
+        Vector2f size;
+        Tile tile;
+    };
+
+    // gather all the wall tiles
+    vector<TileData> tilesData;
+    for(unsigned y = 0; y < height; y++) {
+        for(unsigned x = 0; x < width; x++) {
+            const auto tile = getTile({ x, y });
+            if(tile == WALL)
+                tilesData.push_back({ getTilePosition({ x, y }), tileSize, tile });
+        }
+    }
+
+    // merge subsequent tiles horizontaly if they are the same type of tile
+    if(!tilesData.empty()) {
+        vector<TileData> optimisedTiles;
+        auto last = tilesData[0];
+        unsigned sameCount = 0;
+
+        for(unsigned i = 0; i < tilesData.size(); i++) {
+            const auto same = tilesData[i].position.y == last.position.y &&
+                        tilesData[i].position.x == last.position.x + tileSize.x * (1 + sameCount) &&
+                        tilesData[i].tile == last.tile;
+            if(same)
+                sameCount++;
+            else {
+                if(sameCount)
+                    last.size.x = (1 + sameCount) * tileSize.x;
+                optimisedTiles.push_back(last);
+                sameCount = 0;
+                last = tilesData[i];
+            }
+        }
+        if(sameCount) {
+            last.size.x = (1 + sameCount) * tileSize.x;
+            optimisedTiles.push_back(last);
+        }
+
+        tilesData.swap(optimisedTiles);
+    }
+
+    // build the box2d bodies
+    for(const auto& tileData : tilesData) {
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_staticBody;
+        bodyDef.position = Vector2f_To_b2Vec2(invertHeight({ tileData.position.x + tileData.size.x * .5f, tileData.position.y + tileData.size.y * .5f }));
+
+        auto body = world->CreateBody(&bodyDef);
+
+        b2PolygonShape shape;
+        shape.SetAsBox(tileData.size.x * scaleInv * .5f, tileData.size.y * scaleInv * .5f);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.friction = .8f;
+        fixtureDef.restitution = 0.f;
+        fixtureDef.shape = &shape;
+
+        body->CreateFixture(&fixtureDef);
+        bodies.push_back(body);
     }
 }

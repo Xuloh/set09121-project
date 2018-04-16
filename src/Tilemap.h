@@ -5,6 +5,8 @@
 #include <memory>
 #include <unordered_map>
 #include <string>
+#include <vector>
+#include <Box2D/Box2D.h>
 
 namespace tilemap {
     // the different kinds of tiles
@@ -27,7 +29,7 @@ namespace tilemap {
         void setTexture(std::shared_ptr<sf::Texture> texture);
 
         // set the size of the tiles on screen
-        void setTileSize(const sf::Vector2u& tileSize);
+        void setTileSize(const sf::Vector2f& tileSize);
 
         // set the size of a single sprite in the tile set
         void setSpriteSize(const sf::Vector2u& spriteSize);
@@ -45,22 +47,32 @@ namespace tilemap {
         // get the tile at the given position in the map
         Tile getTile(sf::Vector2u position) const;
 
+        // return the position of the given tile in the world
+        sf::Vector2f getTilePosition(sf::Vector2u position) const;
+
         size_t getWidth() const;
         size_t getHeight() const;
 
     private:
+        // properties used for rendering
         sf::VertexArray vertices;
         std::shared_ptr<sf::Texture> texture;
-        sf::Vector2u tileSize;
+        sf::Vector2f tileSize;
         sf::Vector2u spriteSize;
 
+        // properties of the actual tile map
         std::unique_ptr<Tile[]> tiles;
         size_t width = 0;
         size_t height = 0;
+
+        // map to associate a tile and a sprite index
         std::unordered_map<Tile, unsigned> tileSpriteIndexMap;
         unsigned defaultSpriteIndex = 0;
 
+        std::vector<b2Body*> bodies;
+
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
         void buildVertices();
+        void buildBodies();
     };
 }
