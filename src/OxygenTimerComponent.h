@@ -1,15 +1,18 @@
 #pragma once
 
 #include <ecm/ecm.h>
+#include <SFML/Graphics.hpp>
 
 class OxygenTimerComponent : public ecm::Component {
 protected:
+    float initialTime;
     float remainingTime;
     float depleteRate;
+    sf::VertexArray fadeVertices;
 
 public:
     OxygenTimerComponent() = delete;
-    OxygenTimerComponent(ecm::Entity* parent, float remainingTime, float depleteRate = 1.f);
+    OxygenTimerComponent(ecm::Entity* parent, float initialTime, float depleteRate = 1.f);
     ~OxygenTimerComponent() = default;
 
     void update(double dt) override;
