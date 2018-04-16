@@ -7,6 +7,11 @@
 using namespace std;
 using namespace sf;
 
+Text framerateCounter;
+bool displayFramerate = false;
+float frametimes[256] = {};
+uint8_t ftc = 0;
+
 void closeWindow(const Event& event) {
     // only exit the game when in the main menu or when the close button was pressed
     if (event.type == Event::Closed || scene::getCurrentScene() == "main-menu")
@@ -36,6 +41,17 @@ void load() {
 	event::registerHandler(Event::KeyPressed, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
     event::registerHandler(Event::JoystickButtonPressed, make_shared<event::eventFunctionType>(&closeWindowWithController));
 
+    // setup framerate counter
+    framerateCounter = Text();
+    framerateCounter.setFont(*resources::get<Font>("FiraCode-Medium.ttf"));
+    framerateCounter.setCharacterSize(24.f);
+    framerateCounter.setFillColor(Color::White);
+    framerateCounter.setOutlineThickness(2.f);
+    framerateCounter.setOutlineColor(Color::Black);
+    framerateCounter.setString("0 fps");
+    framerateCounter.setOrigin(0.f, 0.f);
+    framerateCounter.setPosition(0.f, 0.f);
+
     // setup keyboard controls
     input::addControl("Left", Keyboard::Q, Keyboard::A);
     input::addControl("Right", Keyboard::D, Keyboard::D);
@@ -61,6 +77,18 @@ void update() {
 	static Clock clock;
 	const auto dt = clock.restart().asSeconds();
 
+    // update framerate counter
+    if(displayFramerate) {
+        frametimes[++ftc] = dt;
+        if (ftc % 60 == 0) {
+            double davg = 0;
+            for (const auto t : frametimes)
+                davg += t;
+            davg = 1.0 / (davg / 255.0);
+            framerateCounter.setString(to_string(static_cast<int>(davg)) + " fps");
+        }
+    }
+
 	event::update();
 	physics::update(dt);
     scene::update(dt);
@@ -70,6 +98,11 @@ void update() {
 void render() {
     scene::render();
     popup::render();
+
+    // display framerate counter
+    if (displayFramerate)
+        renderer::queue(&framerateCounter, true);
+
 	renderer::render();
 }
 
