@@ -8,8 +8,8 @@ using namespace std;
 using namespace sf;
 
 void closeWindow(const Event& event) {
-    // only exit the game when in the main menu
-    if (scene::getCurrentScene() == "main-menu")
+    // only exit the game when in the main menu or when the close button was pressed
+    if (event.type == Event::Closed || scene::getCurrentScene() == "main-menu")
         renderer::getWindow().close();
     // otherwise return to the main menu
     else
