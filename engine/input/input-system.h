@@ -46,13 +46,15 @@ namespace input {
     // unbind whatever joystick axis was bound to control
     void unbindJoystickAxis(const std::string& control);
 
-	// set active keymap to azerty
+	// set active keymap to azerty (default is qwerty)
+    // also overrides the custom keymap with the azerty keymap
 	void setAzertyActive();
 
-	// set active keymap to qwerty
+	// set active keymap to qwerty (default is qwerty)
+    // also overrides the custom keymap with the qwerty keymap
 	void setQwertyActive();
 
-	// set active keymap to custom
+	// set active keymap to custom (default is qwerty)
 	void setCustomActive();
 
     // returns true if currently using the controller as input or false if not

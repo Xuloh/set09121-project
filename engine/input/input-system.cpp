@@ -188,10 +188,12 @@ void input::unbindJoystickAxis(const std::string& control) {
 
 void input::setAzertyActive() {
 	activeKeymap = &azertyKeymap;
+    customKeymap = unordered_map<string, Keyboard::Key>(azertyKeymap);
 }
 
 void input::setQwertyActive() {
 	activeKeymap = &qwertyKeymap;
+    customKeymap = unordered_map<string, Keyboard::Key>(qwertyKeymap);
 }
 
 void input::setCustomActive() {
