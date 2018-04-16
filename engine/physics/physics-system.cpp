@@ -5,11 +5,13 @@ using namespace sf;
 using namespace physics;
 
 static shared_ptr<b2World> world;
+static b2Vec2 defaultGravity;
 const int32 velocityIterations = 8;
 const int32 positionIterations = 3;
 
 void physics::initialise(const b2Vec2 gravity) {
 	world.reset(new b2World(gravity));
+    defaultGravity = gravity;
 }
 
 void physics::shutdown() {
@@ -22,4 +24,8 @@ void physics::update(const double& dt) {
 
 shared_ptr<b2World> physics::getWorld() {
 	return world;
+}
+
+void physics::resetGravity() {
+    world->SetGravity(defaultGravity);
 }
