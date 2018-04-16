@@ -17,6 +17,8 @@ namespace input {
         return a.axis == b.axis && a.min == b.min && a.max == b.max;
     }
 
+    std::string to_string(sf::Keyboard::Key key);
+
 	// register a new control name
 	void addControl(const std::string& control, sf::Keyboard::Key defaultAzerty, sf::Keyboard::Key defaultQwerty);
 	
