@@ -80,6 +80,7 @@ void load() {
 	scene::add("main-menu", make_shared<MainMenuScene>());
 	scene::add("options-menu", make_shared<OptionsScene>());
 	scene::add("test-level", make_shared<TestLevelScene>());
+    scene::add("game-over", make_shared<GameOverScene>());
 	scene::load("main-menu");
 }
 
