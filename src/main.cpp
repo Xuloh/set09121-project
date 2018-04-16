@@ -8,24 +8,33 @@ using namespace std;
 using namespace sf;
 
 void closeWindow(const Event& event) {
-	renderer::getWindow().close();
+    // only exit the game when in the main menu
+    if (scene::getCurrentScene() == "main-menu")
+        renderer::getWindow().close();
+    // otherwise return to the main menu
+    else
+        scene::load("main-menu");
 }
 
 void closeWindowOnEscapePressed(const Event& event) {
-    if (event.key.code == Keyboard::Escape) {
-        // only exit the game when in the main menu
-        if (scene::getCurrentScene() == "main-menu")
+    // when not using a controller, exit when escape is pressed
+    if (!input::usingController())
+        if (event.key.code == Keyboard::Escape)
             closeWindow(event);
-        // otherwise return to the main menu
-        else
-            scene::load("main-menu");
-    }
+}
+
+void closeWindowWithController(const Event& event) {
+    // when using a controller, escape is mapped to select and start
+    if (input::usingController())
+        if (event.joystickButton.button == 6 || event.joystickButton.button == 7)
+            closeWindow(event);
 }
 
 void load() {
 	// register window handlers
 	event::registerHandler(Event::Closed, make_shared<event::eventFunctionType>(&closeWindow));
-	event::registerHandler(Event::KeyReleased, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
+	event::registerHandler(Event::KeyPressed, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
+    event::registerHandler(Event::JoystickButtonPressed, make_shared<event::eventFunctionType>(&closeWindowWithController));
 
     // setup keyboard controls
     input::addControl("Left", Keyboard::Q, Keyboard::A);

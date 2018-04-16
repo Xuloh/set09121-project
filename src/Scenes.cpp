@@ -259,6 +259,8 @@ void MainMenuScene::render() {
 }
 
 void MainMenuScene::handleEvent(const sf::Event& event) {
+    // if requested by the player
+    // rebind the current control to the first key that is pressed
     if(keyBind) {
         input::setCustomActive();
         input::unbindKey(*currentControl);
