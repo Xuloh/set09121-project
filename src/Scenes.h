@@ -42,3 +42,12 @@ public:
 	void update(double dt) override;
 	void render() override;
 };
+
+class GameOverScene : public ecm::Scene {
+public:
+    GameOverScene() = default;
+
+    void load() override;
+    void update(double dt) override;
+    void render() override;
+};

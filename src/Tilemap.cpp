@@ -193,12 +193,34 @@ void Tilemap::buildBodies() {
                 last = tilesData[i];
             }
         }
-        if(sameCount) {
+        if (sameCount) {
             last.size.x = (1 + sameCount) * tileSize.x;
             optimisedTiles.push_back(last);
         }
 
-        tilesData.swap(optimisedTiles);
+        const auto xsave = optimisedTiles.size();
+        sameCount = 0;
+        vector<TileData> reOptimisedTiles;
+        for(unsigned i = 0; i < optimisedTiles.size(); i++) {
+            last = optimisedTiles[i];
+            for(unsigned j = i + 1; j < optimisedTiles.size(); j++) {
+                const auto same = optimisedTiles[j].position.x == last.position.x &&
+                    optimisedTiles[j].position.y == last.position.y + tileSize.y * (1 + sameCount) &&
+                    optimisedTiles[j].size.x == last.size.x &&
+                    optimisedTiles[j].tile == last.tile;
+                if(same) {
+                    sameCount++;
+                    optimisedTiles.erase(optimisedTiles.begin() + j);
+                    j--;
+                }
+            }
+            if(sameCount)
+                last.size.y = (1 + sameCount) * tileSize.y;
+            reOptimisedTiles.push_back(last);
+            sameCount = 0;
+        }
+
+        tilesData.swap(reOptimisedTiles);
     }
 
     // build the box2d bodies

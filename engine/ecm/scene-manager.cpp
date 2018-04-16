@@ -1,6 +1,5 @@
 #include "scene-manager.h"
 #include <unordered_map>
-#include <iostream>
 
 using namespace std;
 using namespace ecm;
@@ -34,10 +33,8 @@ const std::string& scene::getCurrentScene() {
 
 void scene::update(const double dt) {
     if(!nextScene.empty()) {
-        if (activeScene) {
-            cout << "unloading previous scene" << endl;
+        if (activeScene)
             activeScene->unload();
-        }
         activeScene = scenes[nextScene];
         activeScene->load();
         currentScene = nextScene;
