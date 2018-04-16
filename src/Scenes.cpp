@@ -22,7 +22,7 @@ using namespace event;
 
 // *** MainMenuScene class *** //
 
-MainMenuScene::MainMenuScene() : Scene() {
+MainMenuScene::MainMenuScene() {
     registerHandler(Event::KeyPressed, this);
 }
 

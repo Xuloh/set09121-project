@@ -12,8 +12,14 @@ void closeWindow(const Event& event) {
 }
 
 void closeWindowOnEscapePressed(const Event& event) {
-	if (event.key.code == Keyboard::Escape)
-		closeWindow(event);
+    if (event.key.code == Keyboard::Escape) {
+        // only exit the game when in the main menu
+        if (scene::getCurrentScene() == "main-menu")
+            closeWindow(event);
+        // otherwise return to the main menu
+        else
+            scene::load("main-menu");
+    }
 }
 
 void load() {
