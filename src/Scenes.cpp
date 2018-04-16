@@ -246,9 +246,9 @@ void TestLevelScene::load() {
     auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>("res/sprites/PlayerIdle.png");
 
 	//added keyframe variable
-	playerAnimator->setKeyFrame(29);
+	playerAnimator->setKeyFrame(0);
 	//added endframe variable
-	playerAnimator->setEndFrame(35);
+	playerAnimator->setEndFrame(15);
 
 	playerAnimator->setSpriteSize({ 64, 128 });
     playerAnimator->setAnimationTime(.2f);

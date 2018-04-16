@@ -30,11 +30,11 @@ void load() {
     input::setAzertyActive();
 
     // setup controller controls
-    input::bindJoystickAxis("Left", Joystick::X, -100.f, 0.f);
-    input::bindJoystickAxis("Right", Joystick::X, 0.f, 100.f);
-    input::bindJoystickButton("Jump", 0);
-    input::bindJoystickButton("GravityLeft", 1);
-    input::bindJoystickButton("GravityRight", 2);
+	input::bindJoystickAxis("Left", Joystick::X, -100.f, -30.f);
+	input::bindJoystickAxis("Right", Joystick::X, 30.f, 100.f);
+	input::bindJoystickButton("Jump", 0);
+	input::bindJoystickButton("GravityLeft", 4);
+	input::bindJoystickButton("GravityRight", 5);
 
     // setup scenes
     scene::add("main-menu", make_shared<MainMenuScene>());
