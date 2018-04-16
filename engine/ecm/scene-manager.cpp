@@ -8,6 +8,7 @@ using namespace ecm;
 static unordered_map<string, shared_ptr<Scene>> scenes;
 static shared_ptr<Scene> activeScene;
 static string nextScene;
+static string currentScene;
 
 void scene::add(const std::string& name, const std::shared_ptr<ecm::Scene>& scene) {
     if (!scenes.count(name))
@@ -27,6 +28,10 @@ void scene::load(const std::string& name) {
         throw string("There is no scene with the name : " + name);
 }
 
+const std::string& scene::getCurrentScene() {
+    return currentScene;
+}
+
 void scene::update(const double dt) {
     if(!nextScene.empty()) {
         if (activeScene) {
@@ -35,6 +40,7 @@ void scene::update(const double dt) {
         }
         activeScene = scenes[nextScene];
         activeScene->load();
+        currentScene = nextScene;
         nextScene = "";
     }
     activeScene->update(dt);
