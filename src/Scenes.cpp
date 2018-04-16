@@ -22,6 +22,15 @@ using namespace event;
 
 // *** MainMenuScene class *** //
 
+MainMenuScene::MainMenuScene() : Scene() {
+    registerHandler(Event::KeyPressed, this);
+}
+
+MainMenuScene::~MainMenuScene() {
+    unregisterHandler(Event::KeyPressed, this);
+    Scene::~Scene();
+}
+
 void MainMenuScene::load() {
     const auto font = resources::get<Font>("FiraCode-Medium.ttf");
     const GUISettings settings = { Color::White, Color::Cyan, font.get(), 32.f };
@@ -82,9 +91,6 @@ void MainMenuScene::load() {
     ));
     fullscreenButton->setOrigin({ .5f, .5f });
 
-    auto resolution = guiFactory.makeLabel("Resolution");
-    resolution->setOrigin({ .5f, .5f });
-
     auto selectResolution = guiFactory.makeButton("800x600", make_shared<eventFunctionType>(
         [this](const Event& event) {
             auto& window = renderer::getWindow();
@@ -140,6 +146,51 @@ void MainMenuScene::load() {
         }
     );
 
+    auto azertyButton = guiFactory.makeButton("Set azerty ", make_shared<eventFunctionType>(
+        [](const Event& event) {
+            input::setAzertyActive();
+        }
+    ));
+    azertyButton->setOrigin({ 1.f, .5f });
+
+    auto qwertyButton = guiFactory.makeButton(" Set qwerty", make_shared<eventFunctionType>(
+        [](const Event& event) {
+            input::setQwertyActive();
+        }
+    ));
+    qwertyButton->setOrigin({ 0.f, .5f });
+
+    currentControl = input::getControls().begin();
+    auto selectControl = guiFactory.makeButton("Remap controls", make_shared<eventFunctionType>(
+        [this](const Event& event) {
+            cout << "clicked current control" << endl;
+            keyBind = true;
+        }
+    ));
+    selectControl->getComponent<TextComponent>()->getText().setCharacterSize(24.f);
+    selectControl->setOrigin({ .5f, .5f });
+
+    auto previousControl = guiFactory.makeButton("<", make_shared<eventFunctionType>(
+        [this, selectControl](const Event& event) {
+            if (currentControl == input::getControls().begin())
+                currentControl = input::getControls().end();
+            --currentControl;
+            selectControl->getComponent<TextComponent>()->getText().setString(*currentControl + " : " + input::to_string(input::getKey(*currentControl)));
+        }
+    ));
+    previousControl->setOrigin({ .5f, .5f });
+
+    auto nextControl = guiFactory.makeButton(">", make_shared<eventFunctionType>(
+        [this, selectControl](const Event& event) {
+            if (currentControl != input::getControls().end())
+                ++currentControl;
+            if(currentControl == input::getControls().end())
+                currentControl = input::getControls().begin();
+            selectControl->getComponent<TextComponent>()->getText().setString(*currentControl + " : " + input::to_string(input::getKey(*currentControl)));
+        }
+    ));
+    nextControl->setOrigin({ .5f, .5f });
+
     auto optionsBackButton = guiFactory.makeButton("Back", make_shared<eventFunctionType>(
         [this](const Event& event) {
             cout << "clicked the back button" << endl;
@@ -164,12 +215,17 @@ void MainMenuScene::load() {
     optionsMenuLayout->setAlive(false);
     optionsMenuLayout->setVisible(false);
     auto optionsLayout = optionsMenuLayout->addComponent<LayoutComponent>(1.f, 1.f);
-    optionsLayout->addItem(options, .5f, .2f);
-    optionsLayout->addItem(fullscreenButton, .5f, .4f);
-    optionsLayout->addItem(previousResolution, .3f, .6f);
-    optionsLayout->addItem(selectResolution, .5f, .6f);
-    optionsLayout->addItem(nextResolution, .7f, .6f);
-    optionsLayout->addItem(useControllerButton, .5f, .8f);
+    optionsLayout->addItem(options, .5f, 1.f / 6.f);
+    optionsLayout->addItem(fullscreenButton, .5f, 2.f / 7.f);
+    optionsLayout->addItem(previousResolution, .3f, 3.f / 7.f);
+    optionsLayout->addItem(selectResolution, .5f, 3.f / 7.f);
+    optionsLayout->addItem(nextResolution, .7f, 3.f / 7.f);
+    optionsLayout->addItem(useControllerButton, .5f, 4.f / 7.f);
+    optionsLayout->addItem(azertyButton, .5f, 5.f / 7.f);
+    optionsLayout->addItem(qwertyButton, .5f, 5.f / 7.f);
+    optionsLayout->addItem(previousControl, .3f, 6.f / 7.f);
+    optionsLayout->addItem(selectControl, .5f, 6.f / 7.f);
+    optionsLayout->addItem(nextControl, .7f, 6.f / 7.f);
     optionsLayout->addItem(optionsBackButton, .9f, .9f);
     optionsLayout->setItemsAlive(false);
     optionsLayout->setItemsVisible(false);
@@ -186,6 +242,11 @@ void MainMenuScene::load() {
     entityManager.entities.push_back(selectResolution);
     entityManager.entities.push_back(nextResolution);
     entityManager.entities.push_back(useControllerButton);
+    entityManager.entities.push_back(azertyButton);
+    entityManager.entities.push_back(qwertyButton);
+    entityManager.entities.push_back(previousControl);
+    entityManager.entities.push_back(selectControl);
+    entityManager.entities.push_back(nextControl);
     entityManager.entities.push_back(optionsBackButton);
 }
 
@@ -195,6 +256,15 @@ void MainMenuScene::update(double dt) {
 
 void MainMenuScene::render() {
 	Scene::render();
+}
+
+void MainMenuScene::handleEvent(const sf::Event& event) {
+    if(keyBind) {
+        input::setCustomActive();
+        input::unbindKey(*currentControl);
+        input::bindKey(*currentControl, event.key.code);
+        keyBind = false;
+    }
 }
 
 // *** TestLevelScene class *** //
