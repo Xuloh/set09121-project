@@ -27,7 +27,7 @@ void load() {
     input::addControl("Jump", Keyboard::Space, Keyboard::Space);
     input::addControl("GravityLeft", Keyboard::A, Keyboard::Q);
     input::addControl("GravityRight", Keyboard::E, Keyboard::E);
-    input::setAzertyActive();
+    input::setQwertyActive();
 
     // setup controller controls
     input::bindJoystickAxis("Left", Joystick::X, -100.f, 0.f);
