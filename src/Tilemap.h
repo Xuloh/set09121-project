@@ -73,7 +73,14 @@ namespace tilemap {
         std::vector<b2Body*> bodies;
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+        // build the vertex array
         void buildVertices();
+
+        // build the b2Bodies for the wall
         void buildBodies();
+
+        // update the size of the scene view to fit the tilemap
+        void updateViewSize() const;
     };
 }

@@ -64,6 +64,7 @@ void Tilemap::load(const string& filePath) {
     
     buildVertices();
     buildBodies();
+    updateViewSize();
 }
 
 void Tilemap::setTexture(const shared_ptr<Texture> texture) {
@@ -241,5 +242,28 @@ void Tilemap::buildBodies() {
 
         body->CreateFixture(&fixtureDef);
         bodies.push_back(body);
+    }
+}
+
+void Tilemap::updateViewSize() const {
+    const auto windowSize = renderer::getWindow().getSize();
+
+    // compute the total size of the tilemap
+    const auto tilemapWidth = width * tileSize.x;
+    const auto tilemapHeight = width * tileSize.y;
+
+    // which is bigger, the tilemap's width or height ?
+    const auto max = std::max(tilemapWidth, tilemapHeight);
+
+    // make the view fit the bigger one whild preserving the aspect ratio
+    if(max == tilemapWidth) {
+        const auto newHeight = tilemapWidth * windowSize.y / windowSize.x;
+        renderer::getSceneView().setSize(tilemapWidth, newHeight);
+        renderer::getSceneView().setCenter(tilemapWidth * .5f, newHeight * .5f);
+    }
+    else {
+        const auto newWidth = tilemapHeight * windowSize.x / windowSize.y;
+        renderer::getSceneView().setSize(newWidth, tilemapHeight);
+        renderer::getSceneView().setCenter(newWidth * .5f, tilemapHeight * .5f);
     }
 }
