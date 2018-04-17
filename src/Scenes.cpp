@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 #include <iostream>
 #include <resources/resources-manager.h>
@@ -390,6 +391,9 @@ void GameOverScene::load() {
     entityManager.entities.push_back(_layout);
     entityManager.entities.push_back(gameOverLabel);
     entityManager.entities.push_back(hintLabel);
+
+    heartBeatSound = Sound(*resources::get<SoundBuffer>("heartbeat-slow-reverb.ogg"));
+    heartBeatSound.play();
 }
 
 void GameOverScene::update(const double dt) {
