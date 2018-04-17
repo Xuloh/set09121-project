@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 #include <iostream>
 #include <resources/resources-manager.h>
@@ -342,6 +343,7 @@ void TestLevelScene::load() {
 	auto wallRPhysics = wallR->addComponent<physics::PhysicsComponent>(false, wallSize);
 	wallRPhysics->setRestitution(0.f);
     */
+    physics::resetGravity();
     tilemap::getTilemap()->load("res/testLevel.txt");
 	auto player = make_shared<Entity>();
 	player->setOrigin({ .5f, .5f });
@@ -357,7 +359,7 @@ void TestLevelScene::load() {
 	playerField->setForce(20.f);
 	auto gravityRotate = player->addComponent<RotateGravityComponent>();
 
-    auto playerOxygen = player->addComponent<OxygenTimerComponent>(5.f);
+    auto playerOxygen = player->addComponent<OxygenTimerComponent>(20.f);
 
     /*
 	auto box = make_shared<Entity>();
@@ -406,6 +408,9 @@ void GameOverScene::load() {
     entityManager.entities.push_back(_layout);
     entityManager.entities.push_back(gameOverLabel);
     entityManager.entities.push_back(hintLabel);
+
+    heartBeatSound = Sound(*resources::get<SoundBuffer>("heartbeat-slow-reverb.ogg"));
+    heartBeatSound.play();
 }
 
 void GameOverScene::update(const double dt) {

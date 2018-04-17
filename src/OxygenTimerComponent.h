@@ -2,12 +2,15 @@
 
 #include <ecm/ecm.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class OxygenTimerComponent : public ecm::Component {
 protected:
     float initialTime;
     float remainingTime;
     float depleteRate;
+    sf::Sound slowHeartBeatSound;
+    sf::Sound fastHeartBeatSound;
     sf::VertexArray fadeVertices;
 
 public:

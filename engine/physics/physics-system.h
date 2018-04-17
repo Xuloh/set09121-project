@@ -19,6 +19,9 @@ namespace physics {
 	// returns a pointer to the Box2D world managed by the physics system
 	std::shared_ptr<b2World> getWorld();
 
+    // reset the gravity to its default value (the one that was passed to the initialise function)
+    void resetGravity();
+
 	// the scale used to convert meters to pixels
 	const float scale = 50.f;
 

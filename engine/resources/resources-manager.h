@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <string>
@@ -14,6 +15,8 @@ namespace resources {
     template<> std::shared_ptr<sf::Font> load(const std::string& name);
     
     template<> std::shared_ptr<sf::Texture> load(const std::string& name);
+
+    template<> std::shared_ptr<sf::SoundBuffer> load(const std::string& name);
 
     template<typename T> std::shared_ptr<T> get(const std::string& name) {
         static std::unordered_map<std::string, std::shared_ptr<T>> resources;

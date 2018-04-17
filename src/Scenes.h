@@ -44,6 +44,8 @@ public:
 };
 
 class GameOverScene : public ecm::Scene {
+protected:
+    sf::Sound heartBeatSound;
 public:
     GameOverScene() = default;
 
