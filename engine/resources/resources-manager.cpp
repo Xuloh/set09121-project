@@ -20,3 +20,10 @@ template<> shared_ptr<Texture> resources::load(const string& name) {
         throw string("Could not load sprite : " + name);
     return texture;
 }
+
+template<> shared_ptr<SoundBuffer> resources::load(const string& name) {
+    auto sound = make_shared<SoundBuffer>();
+    if (!sound->loadFromFile("res/sounds/" + name))
+        throw string("Could not load sound : " + name);
+    return sound;
+}
