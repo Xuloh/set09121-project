@@ -342,7 +342,7 @@ void TestLevelScene::load() {
 	playerField->setForce(20.f);
 	auto gravityRotate = player->addComponent<RotateGravityComponent>();
 
-    auto playerOxygen = player->addComponent<OxygenTimerComponent>(5.f);
+    auto playerOxygen = player->addComponent<OxygenTimerComponent>(20.f);
 
     /*
 	auto box = make_shared<Entity>();
