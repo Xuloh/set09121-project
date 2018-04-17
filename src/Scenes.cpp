@@ -351,7 +351,7 @@ void TestLevelScene::load() {
 	auto playerPhysics = player->addComponent<PlayerPhysicsComponent>(Vector2f(64.f, 128.f));
 	auto playerSprite = player->addComponent<SpriteComponent>();
 	playerSprite->setSprite();
-	auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>(resources::get<Texture>("PlayerIdle.png"));
+	auto playerAnimator = player->addComponent<SpritesheetAnimatorComponent>(resources::get<Texture>("Player.png"));
 	playerAnimator->setSpriteSize({ 64, 128 });
 	playerAnimator->setAnimationTime(.2f);
 
