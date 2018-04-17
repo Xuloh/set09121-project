@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ecm/scene-manager.h>
 #include <renderer/renderer-system.h>
+#include <resources/resources-manager.h>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
@@ -13,10 +14,26 @@ OxygenTimerComponent::OxygenTimerComponent(Entity* parent, const float initialTi
     this->remainingTime = initialTime;
     this->depleteRate = depleteRate;
     fadeVertices = VertexArray(Quads, 4);
+    slowHeartBeatSound = Sound(*resources::get<SoundBuffer>("heartbeat-slow.ogg"));
+    fastHeartBeatSound = Sound(*resources::get<SoundBuffer>("heartbeat-fast.ogg"));
 }
 
 void OxygenTimerComponent::update(const double dt) {
+    static auto heartBeatTimer = 0.f;
+    heartBeatTimer += dt;
     remainingTime -= dt * depleteRate;
+    if(remainingTime > initialTime * .5f) {
+        if(heartBeatTimer >= 3.f) {
+            heartBeatTimer = 0.f;
+            slowHeartBeatSound.play();
+        }
+    }
+    else {
+        if(heartBeatTimer >= 1.2f) {
+            heartBeatTimer = 0.f;
+            fastHeartBeatSound.play();
+        }
+    }
     if (remainingTime <= 0.f) {
         cout << "oxygen timer ran out :(" << endl;
         scene::load("game-over");
