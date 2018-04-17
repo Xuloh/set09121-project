@@ -43,26 +43,6 @@ void closeWindowWithController(const Event& event) {
 }
 
 void load() {
-	//load from save
-	string line;
-	ifstream myfile("save.txt");
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			stringstream ss(line);
-			string word;
-			ss >> word;
-			int setValue = (int)line.at(line.length()-1);
-			cout << setValue << ',' << word << '\n';
-		}
-		myfile.close();
-	}
-
-	else cout << "Unable to open file";
-	
-
-
 	// register window handlers
 	event::registerHandler(Event::Closed, make_shared<event::eventFunctionType>(&closeWindow));
 	event::registerHandler(Event::KeyPressed, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
@@ -101,6 +81,35 @@ void load() {
     tilemap->setTileSize({ 64, 64 });
     tilemap->setDefaultSpriteIndex(1);
     tilemap->setTileSpriteIndex(tilemap::WALL, 2);
+
+    //load saved options
+    string line;
+    ifstream myfile("save.txt");
+    if (myfile.is_open())
+    {
+        while (getline(myfile, line))
+        {
+            stringstream ss(line);
+            string key, valueStr;
+            getline(ss, key, ','); // get the key before the ,
+            getline(ss, valueStr); // get the value after
+            const auto value = stoi(valueStr); // parse the value to an int
+
+            // apply the option
+            if (key == "Fullscreen")
+                renderer::setFullscreen(bool(value));
+            else if (key == "DisplayFrames")
+                displayFramerate = bool(value);
+            else if (key == "Controller")
+                input::setUseController(bool(value));
+            else {
+                input::bindKey(key, Keyboard::Key(value));
+            }
+            cout << key << ',' << value << '\n';
+        }
+        myfile.close();
+    }
+    else cout << "Unable to open options file" << endl;
 
 	// setup scenes
 	scene::add("main-menu", make_shared<MainMenuScene>());
