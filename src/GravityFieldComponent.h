@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <forward_list>
 
+// A component that applies a force to surrounding b2Bodies towards itself
 class GravityFieldComponent : public ecm::Component {
 protected:
     b2Fixture* field;

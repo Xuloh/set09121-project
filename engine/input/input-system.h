@@ -17,6 +17,7 @@ namespace input {
         return a.axis == b.axis && a.min == b.min && a.max == b.max;
     }
 
+    // returns a string representation of a Key
     std::string to_string(sf::Keyboard::Key key);
 
 	// register a new control name

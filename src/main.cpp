@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <stdio.h>
-#include <string.h>
 #include "Scenes.h"
 #include "main.h"
 #include "popup-system.h"
@@ -87,12 +85,13 @@ void load() {
     ifstream myfile("save.txt");
     if (myfile.is_open())
     {
+        cout << "reading options file" << endl;
         while (getline(myfile, line))
         {
-            stringstream ss(line);
+            stringstream lineStream(line);
             string key, valueStr;
-            getline(ss, key, ','); // get the key before the ,
-            getline(ss, valueStr); // get the value after
+            getline(lineStream, key, ','); // get the key before the ,
+            getline(lineStream, valueStr); // get the value after
             const auto value = stoi(valueStr); // parse the value to an int
 
             // apply the option
@@ -102,9 +101,8 @@ void load() {
                 displayFramerate = bool(value);
             else if (key == "Controller")
                 input::setUseController(bool(value));
-            else {
+            else
                 input::bindKey(key, Keyboard::Key(value));
-            }
             cout << key << ',' << value << '\n';
         }
         myfile.close();

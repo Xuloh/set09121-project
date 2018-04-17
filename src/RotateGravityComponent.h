@@ -5,6 +5,8 @@
 #include <memory>
 #include "PlayerPhysicsComponent.h"
 
+// A component that rotates the gravity of the level 90 degrees clockwise or counter clockwise
+// in response to key presses
 class RotateGravityComponent : public ecm::Component, public event::EventHandler {
 protected:
     std::shared_ptr<PlayerPhysicsComponent> playerPhysics;

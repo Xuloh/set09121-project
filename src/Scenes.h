@@ -6,6 +6,7 @@
 #include <string>
 #include <event/event-system.h>
 
+// the main menu, with a button to start the game, a button to access the options menu and a button to exit the game
 class MainMenuScene : public ecm::Scene {
 protected:
 	std::shared_ptr<ecm::Entity> mainMenuLayout;
@@ -18,6 +19,7 @@ public:
 	void render() override;
 };
 
+// the options menu, with all the controls needed to change the game's options and a button to go back to the main menu
 class OptionsScene : public ecm::Scene, public event::EventHandler {
 protected:
 	std::shared_ptr<ecm::Entity> optionsMenuLayout;
@@ -34,6 +36,7 @@ public:
 	void handleEvent(const sf::Event& event) override;
 };
 
+// a scene used to test gameplay elements
 class TestLevelScene : public ecm::Scene {
 public:
 	TestLevelScene() = default;
@@ -43,6 +46,7 @@ public:
 	void render() override;
 };
 
+// the game over screen, plays a slow heart beat sound when loaded to signify the death of the player
 class GameOverScene : public ecm::Scene {
 protected:
     sf::Sound heartBeatSound;
