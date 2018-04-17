@@ -14,6 +14,8 @@
 #include <renderer/renderer-system.h>
 #include "tilemap-system.h"
 #include "OxygenTimerComponent.h"
+#include <fstream>
+
 
 using namespace std;
 using namespace sf;
@@ -229,6 +231,21 @@ void OptionsScene::load() {
 	auto optionsBackButton = guiFactory.makeButton("Back", make_shared<eventFunctionType>(
 		[this](const Event& event) {
 		cout << "clicked the back button" << endl;
+		
+		//save options to file
+		ofstream myfile;
+		myfile.open("save.txt");
+		myfile << "Fullscreen"<<','<< renderer::isFullscreen() << '\n';
+		myfile << "DisplayFrames" << ',' << displayFramerate << '\n';
+		myfile << "Controller" << ',' << input::usingController() << '\n';
+		for (auto& control : input::getControls()) {
+			auto key = input::getKey(control);
+			myfile << control << ',' << key << '\n';
+		}
+		myfile.close();
+		
+
+
 		scene::load("main-menu");
 	}
 	));

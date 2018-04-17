@@ -1,5 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <engine.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <stdio.h>
+#include <string.h>
 #include "Scenes.h"
 #include "main.h"
 #include "popup-system.h"
@@ -37,6 +43,26 @@ void closeWindowWithController(const Event& event) {
 }
 
 void load() {
+	//load from save
+	string line;
+	ifstream myfile("save.txt");
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			stringstream ss(line);
+			string word;
+			ss >> word;
+			int setValue = (int)line.at(line.length()-1);
+			cout << setValue << ',' << word << '\n';
+		}
+		myfile.close();
+	}
+
+	else cout << "Unable to open file";
+	
+
+
 	// register window handlers
 	event::registerHandler(Event::Closed, make_shared<event::eventFunctionType>(&closeWindow));
 	event::registerHandler(Event::KeyPressed, make_shared<event::eventFunctionType>(&closeWindowOnEscapePressed));
